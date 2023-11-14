@@ -27,3 +27,7 @@ npm run dev
 ```sh
 npm run build
 ```
+
+Yung Huey
+run this command to get router
+npm install vue-router@next
