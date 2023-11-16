@@ -1,0 +1,22 @@
+:root{
+    --light-bg-color: #ece6e2;
+    --light-color: #ecd9c9;
+    --dark-color: #3c1e08;
+    --gold-neutral-color:#bd9957;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+html{
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-bg-color);
+}
+#app{
+    /* like body */
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-bg-color);
+
+}
