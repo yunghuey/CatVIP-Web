@@ -28,11 +28,11 @@
 
         <div class="row my-2">
             <div class="col-5 col-sm-4">
-                <label for="password">Password</label>
+                <label for="password" class="form-label">Password</label>
                 <input type="password" id="password" class="form-control" placeholder="Enter password">
             </div>
             <div class="col-5 col-sm-4">
-                <label for="confirmpassword">Confirm password</label>
+                <label for="confirmpassword" class="form-label">Confirm password</label>
                 <input type="password" id="confirmpassword" class="form-control" placeholder="Confirm password">
             </div>
         </div>
