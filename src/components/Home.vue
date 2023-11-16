@@ -4,6 +4,12 @@
 
 <script>
 export default {
-    name: 'Home'
+    name: 'Home',
+    mounted(){
+        let user = localStorage.getItem('token');
+        if (!user){
+           this.$router.push({name: 'Login'});
+        }
+    }
 }
-</script>
+</script> 
