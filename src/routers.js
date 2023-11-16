@@ -1,5 +1,4 @@
 // this router is like the bloc file in flutter, it will redirect which page to go
-// import { def } from '@vue/shared';
 import Home from "./components/Home.vue";
 import Login from "./components/authentication/Login.vue";
 import SignUp from "./components/authentication/SignUp.vue";
