@@ -50,8 +50,8 @@
             </div>
         </div>
         <div class="row my-2">
-            <div class="col-3">
-                <button class="form-control">Sign Up</button>
+            <div class="col-2">
+                <button class="btn">Sign Up</button>
             </div>
         </div>
         <div class="row">
@@ -90,9 +90,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 img.logo{
     width: 120px;
+}
+button{
+    color: var(--dark-color);
+    background-color: var(--light-color);
+    border: 1px solid var(--dark-color);
+}
+button:hover{
+    border: 1px solid var(--dark-color);
+    color: #FFF;
+    background-color: var(--gold-neutral-color);
 }
 .hyperlink{
     text-decoration: none;
@@ -109,14 +119,33 @@ input[type="date"]:focus{
 }
 .row{
     justify-content: center;
+    /* border: 1px solid black; */
 }
-button{
-    color: #3c1e08;
-    background-color: #ecd9c9;
-}
-button:hover{
-    border: 2px solid #3c1e08;
-    color: #fff;
-    background-color: #bd9957;
-}
+input[type='radio']:after {
+        width: 17px;
+        height: 17px;
+        border-radius: 15px;
+        top: -3px;
+        left: -1px;
+        position: relative;
+        background-color: #d1d3d1;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    input[type='radio']:checked:after {
+        width: 17px;
+        height: 17px;
+        border-radius: 15px;
+        top: -3px;
+        left: -1px;
+        position: relative;
+        background-color: var(--gold-neutral-color);
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
 </style>

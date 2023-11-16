@@ -90,18 +90,17 @@ img.logo{
     width: 150px;
 }
 button{
-    color: #3c1e08;
-    background-color: #ecd9c9;
+    color: var(--dark-color);
+    background-color: var(--light-color);
 }
 button:hover{
-    border: 1px solid #3c1e08;
-    color: #fff;
-    background-color: #bd9957;
-
+    border: 1px solid var(--dark-color);
+    color: #FFF;
+    background-color: var(--gold-neutral-color);
 }
 .hyperlink{
     text-decoration: none;
-    color: #3c1e08;
+    color: var(--dark-color);
 }
 .hyperlink:hover{
     text-decoration: underline;
