@@ -35,7 +35,7 @@
 </template>
 
 <script>
-    import { EMPTY_ARR } from "@vue/shared";
+import { EMPTY_ARR } from "@vue/shared";
 import { ApiConstant } from "../../repository/APIConstant.js"
     import axios from 'axios';
     export default
@@ -56,41 +56,41 @@ import { ApiConstant } from "../../repository/APIConstant.js"
         },
         methods: {
             async loginFunc() {
-            console.log(this.username, this.password);
-            if(!this.username && !this.password){
-                this.isUsernameError = true;
-                this.usernameErrorMessage = "Username must not be empty";
-                this.isPwdError = true;
-                this.pwdErrorMessage = "Password must not be empty";
-                return;
-            }
-            if(!this.username){
-                this.isUsernameError = true;
-                this.usernameErrorMessage = "Username must not be empty";
-                return;
-            }
-            if(!this.password){
-                this.isPwdError = true;
-                this.pwdErrorMessage = "Password must not be empty";
-                return;
-            }
-            try {
-                const result = await axios.post(ApiConstant.LoginURL, {
-                    username: this.username,
-                    password: this.password,
-                    isMobileLogin: false
-                });
-                console.log("hello "+result.status); 
-                if (result.status === 200) {
-                    console.log('sign in done');
-                    localStorage.setItem("token", JSON.stringify(result.data));
-                    this.$router.push({ name: 'Home' });
+                console.log(this.username, this.password);
+                if(!this.username && !this.password){
+                    this.isUsernameError = true;
+                    this.usernameErrorMessage = "Username must not be empty";
+                    this.isPwdError = true;
+                    this.pwdErrorMessage = "Password must not be empty";
+                    return;
                 }
-            } catch (error) {
-                this.isUsernameError = true;
-                this.isPwdError = true;
-                this.pwdErrorMessage = "Username or password is invalid";
-            }
+                if(!this.username){
+                    this.isUsernameError = true;
+                    this.usernameErrorMessage = "Username must not be empty";
+                    return;
+                }
+                if(!this.password){
+                    this.isPwdError = true;
+                    this.pwdErrorMessage = "Password must not be empty";
+                    return;
+                }
+                try {
+                    const result = await axios.post(ApiConstant.LoginURL, {
+                        username: this.username,
+                        password: this.password,
+                        isMobileLogin: false
+                    });
+                    console.log("hello "+result.status); 
+                    if (result.status === 200) {
+                        console.log('sign in done');
+                        localStorage.setItem("token", JSON.stringify(result.data));
+                        this.$router.push({ name: 'Home' });
+                    }
+                } catch (error) {
+                    this.isUsernameError = true;
+                    this.isPwdError = true;
+                    this.pwdErrorMessage = "Username or password is invalid";
+                }
             },
             
             // login username: admin, password: abc12345, isMobileLogin: false
