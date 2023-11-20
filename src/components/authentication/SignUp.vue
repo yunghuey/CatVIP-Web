@@ -158,7 +158,7 @@ export default {
                     password: this.password.trim(),
                     dateOfBirth: this.dob,
                     gender: JSON.parse(this.gender.toLowerCase()),
-                    roleId: 2
+                    roleId: 4
                 };
                 console.log(body);
                 let result = await axios.post(ApiConstant.RegisterURL, body);
