@@ -17,7 +17,7 @@
                         <input :class="{'error-sign': isPwdError}" class="form-control my-2 border-3" type="password" v-model="password" placeholder="Enter password"/>
                         <span :class="{'text-danger': isPwdError}">{{ pwdErrorMessage}}</span>
 
-                        <div class="text-end"><router-link to="/sign-up" class="hyperlink">Forgot password?</router-link> </div>
+                        <div class="text-end"><router-link to="/forgotpassword" class="hyperlink">Forgot password?</router-link> </div>
 
                         <div class="text-center"><input type="submit" value="Sign In" class="btn" v-on:click="loginFunc"/></div>
                     </div>
@@ -76,8 +76,8 @@ import { ApiConstant } from "../../repository/APIConstant.js"
                 }
                 try {
                     const result = await axios.post(ApiConstant.LoginURL, {
-                        username: this.username,
-                        password: this.password,
+                        username: this.username.trim(),
+                        password: this.password.trim(),
                         isMobileLogin: false
                     });
                     console.log("hello "+result.status); 

@@ -2,6 +2,7 @@
 import Home from "./components/Home.vue";
 import Login from "./components/authentication/Login.vue";
 import SignUp from "./components/authentication/SignUp.vue";
+import ForgotPassword from "./components/authentication/ForgotPassword.vue";
 import {createRouter, createWebHashHistory} from 'vue-router';
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
         name: 'SignUp',
         component: SignUp,
         path: '/sign-up'
+    },
+    {
+        name: 'c',
+        component: ForgotPassword,
+        path: '/forgotpassword'
     }
 ];
 
