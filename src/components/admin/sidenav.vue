@@ -1,5 +1,5 @@
 <template>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <button class="navbar-toggler me-2" type="button"  aria-controls="offcanvasExample">
                     <span class="navbar-toggler-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"></span>
@@ -18,8 +18,6 @@
                             <i class="bi bi-person-fill"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Edit profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#"  v-on:click="logout">Logout</a></li>
                         </ul>
                     </li>
@@ -43,14 +41,19 @@
            <nav class="navbar">
                 <ul class="navbar-nav">
                     <li class="p-1 my-1 display">
-                        <a href="#" class="nav-link px-2" active>
-                            <span class="me-2"><i class="bi bi-speedometer"></i>&nbsp; <span>Dashboard</span></span>
-                        </a>
+                        <router-link to="/" class="hyperlink"> 
+                            <a href="#" class="nav-link px-2" active>
+                                <span class="me-2"><i class="bi bi-speedometer"></i>&nbsp; <span>Dashboard</span></span>
+                            </a>
+                        </router-link>
                     </li>
                     <li class="p-1 my-1 display">
-                        <a href="#" class="nav-link px-2" active>
-                            <span class="me-2"><i class="bi bi-mortarboard-fill"></i>&nbsp; <span>Expert application </span></span>
-                        </a>
+                        <router-link to="/expert/view" class="hyperlink"> 
+                            <a href="#" class="nav-link px-2" active>
+                                <span class="me-2"><i class="bi bi-mortarboard-fill"></i>&nbsp; <span>Expert application </span></span>
+                            </a>
+                        </router-link>
+                       
                     </li>
                     <li class="p-1 my-1 display">
                         <a href="#" class="nav-link px-2" active>
@@ -74,6 +77,23 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+export default {
+    name: 'Navbar',
+    mounted(){
+        let user = localStorage.getItem('token');
+        if (!user){
+           this.$router.push({name: 'Login'});
+        }
+    },
+    methods: {
+        logout(){
+            localStorage.removeItem('token');
+            localStorage.removeItem('isSeller');
+            this.$router.push({name: 'Login'});
+        }
+
+    },
+}
 </script>
 
 
@@ -91,6 +111,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 }
 .offcanvas.offcanvas-start.sidebar-nav{
     width: var(--offcanvas-width);
+}
+.hyperlink{
+    text-decoration: none;
 }
 
 @media (min-width: 992px){
