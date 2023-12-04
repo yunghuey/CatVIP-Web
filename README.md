@@ -31,3 +31,31 @@ npm run build
 Yung Huey
 run this command to get router
 npm install vue-router@next
+
+
+## When first create a new file
+use this template
+
+```
+<template>
+  <Navbar></Navbar>
+  <!-- start code here -->
+  <main></main>
+<template>
+
+<script>
+import Navbar from './sidenav.vue';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+export default{
+    components:{
+        Navbar,
+    }
+}
+
+</script>
+
+<style>
+</style>
+```
+
