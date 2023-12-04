@@ -56,6 +56,13 @@ import { ApiConstant } from "../../repository/APIConstant.js"
         },
         methods: {
             async loginFunc() {
+
+                this.isUsernameError = false;
+                this.isPwdError = false;
+                this.pwdErrorMessage = '',
+                this.usernameErrorMessage = '',
+
+
                 console.log(this.username, this.password);
                 if(!this.username && !this.password){
                     this.isUsernameError = true;
