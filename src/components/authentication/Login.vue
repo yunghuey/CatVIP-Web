@@ -35,9 +35,8 @@
 </template>
 
 <script>
-import { EMPTY_ARR } from "@vue/shared";
 import { ApiConstant } from "../../repository/APIConstant.js"
-    import axios from 'axios';
+import axios from 'axios';
     export default
     {
         // name can put same as filename -- name of component
@@ -87,11 +86,16 @@ import { ApiConstant } from "../../repository/APIConstant.js"
                         password: this.password.trim(),
                         isMobileLogin: false
                     });
-                    console.log("hello "+result.status); 
                     if (result.status === 200) {
-                        console.log('sign in done');
                         localStorage.setItem("token", JSON.stringify(result.data));
-                        this.$router.push({ name: 'Home' });
+                        if (this.username == 'admin'){
+                            localStorage.setItem("isSeller", false);
+                            this.$router.push({ name: 'Home' });
+
+                        } else {
+                            localStorage.setItem("isSeller", true);
+
+                        }
                     }
                 } catch (error) {
                     this.isUsernameError = true;
@@ -99,7 +103,6 @@ import { ApiConstant } from "../../repository/APIConstant.js"
                     this.pwdErrorMessage = "Username or password is invalid";
                 }
             },
-            
             // login username: admin, password: abc12345, isMobileLogin: false
         },
         mounted(){
