@@ -34,6 +34,7 @@ import Navbar from '@/components/admin/sidenav.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default{
+    name: "Home",
     components:{
         Navbar,
     },

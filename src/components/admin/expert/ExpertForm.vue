@@ -59,7 +59,6 @@ export default{
             this.$router.push({name:'Login'});
         }
         this.id = this.$route.params.id;
-        
     },
     data(){
         return {
