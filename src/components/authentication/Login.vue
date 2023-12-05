@@ -90,7 +90,7 @@ import axios from 'axios';
                         localStorage.setItem("token", JSON.stringify(result.data));
                         console.log("statys 200");
                         if (this.username == 'admin'){
-                            localStorage.setItem("isSeller", false);
+                            localStorage.setItem("isSeller", "no");
                             console.log("Going to home");
                             this.$router.push({ name: 'Home' });
                         } else {

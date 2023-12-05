@@ -33,7 +33,9 @@ export default{
     mounted(){
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
-        if (!user || !seller){
+        if (!user || seller == "no"){
+            localStorage.removeItem('token');
+            localStorage.removeItem('isSeller');
            this.$router.push({name: 'Login'});
         }
     },

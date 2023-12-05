@@ -165,7 +165,7 @@ export default {
                 if(result.status == 200){
                     localStorage.setItem("token", JSON.stringify(result.data));
                     if (this.username == 'admin'){
-                        localStorage.setItem("isSeller", false);
+                        localStorage.setItem("isSeller", "no");
                         this.$router.push({ name: 'Home' });
 
                     } else {
