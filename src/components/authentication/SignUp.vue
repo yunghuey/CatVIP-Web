@@ -24,7 +24,7 @@
             </div>
             <div class="col-5 col-sm-4">
                 <label for="birthday" class="form-label">Date of Birth *</label>
-                <input type="date" class="form-control" :class="{'error-sign': isDobError}" id="birthday" name="birthday" :max="maxBirthday" v-model="dob">
+                <input type="date" class="form-control" :class="{'error-sign': isDobError}" id="birthday" name="birthday" :max="maxBirthday" @input="validateDob" v-model="dob">
             </div>
         </div>
 
@@ -164,7 +164,14 @@ export default {
                 let result = await axios.post(ApiConstant.RegisterURL, body);
                 if(result.status == 200){
                     localStorage.setItem("token", JSON.stringify(result.data));
-                    this.$router.push({ name: 'Home' });
+                    if (this.username == 'admin'){
+                        localStorage.setItem("isSeller", false);
+                        this.$router.push({ name: 'Home' });
+
+                    } else {
+                        localStorage.setItem("isSeller", "yes");
+                        this.$router.push({ name: 'Seller'});
+                    }
                 } else{
                     console.log(result.data);
                     alert('Invalid sign up');
@@ -188,6 +195,14 @@ export default {
                 }
             }
             
+        },
+        validateDob(){
+            const enteredDate = new Date(this.dob);
+
+            if(enteredDate > new Date(this.maxBirthday)){
+                enteredDate.setFullYear(new Date(this.maxBirthday).getFullYear());
+                this.dob = enteredDate.toISOString().split('T')[0];
+            }
         }
     },
     computed: {
@@ -200,8 +215,11 @@ export default {
     },
     mounted(){
         let user = localStorage.getItem('token');
-        if (user){
+        let seller = localStorage.getItem('isSeller');
+        if (user && seller == false){
             this.$router.push({name:'Home'})
+        } else if (user && seller == true){
+            this.$router.push({name:'Seller'});
         }
     }
 }

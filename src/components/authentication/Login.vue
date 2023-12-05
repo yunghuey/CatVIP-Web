@@ -88,13 +88,15 @@ import axios from 'axios';
                     });
                     if (result.status === 200) {
                         localStorage.setItem("token", JSON.stringify(result.data));
+                        console.log("statys 200");
                         if (this.username == 'admin'){
                             localStorage.setItem("isSeller", false);
+                            console.log("Going to home");
                             this.$router.push({ name: 'Home' });
-
                         } else {
-                            localStorage.setItem("isSeller", true);
-
+                            localStorage.setItem("isSeller", "yes");
+                            console.log("going to seller");
+                            this.$router.push({ name: 'Seller'});
                         }
                     }
                 } catch (error) {
@@ -107,8 +109,11 @@ import axios from 'axios';
         },
         mounted(){
             let user = localStorage.getItem('token');
-            if (user){
-                this.$router.push({name:'Home'});
+            let seller = localStorage.getItem('isSeller');
+            if (user && seller == false){
+                this.$router.push({name:'Home'})
+            } else if (user && seller == true){
+                this.$router.push({name:'Seller'});
             }
         },
         

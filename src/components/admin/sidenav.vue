@@ -14,11 +14,11 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-fill"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"  v-on:click="logout">Logout</a></li>
+                            <li><a class="dropdown-item"  v-on:click="logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -42,14 +42,14 @@
                 <ul class="navbar-nav">
                     <li class="p-1 my-1 display">
                         <router-link to="/" class="hyperlink"> 
-                            <a href="#" class="nav-link px-2" active>
+                            <a class="nav-link px-2" active>
                                 <span class="me-2"><i class="bi bi-speedometer"></i>&nbsp; <span>Dashboard</span></span>
                             </a>
                         </router-link>
                     </li>
                     <li class="p-1 my-1 display">
                         <router-link to="/expert/view" class="hyperlink"> 
-                            <a href="#" class="nav-link px-2" active>
+                            <a class="nav-link px-2" active>
                                 <span class="me-2"><i class="bi bi-mortarboard-fill"></i>&nbsp; <span>Expert application </span></span>
                             </a>
                         </router-link>
@@ -57,13 +57,13 @@
                     </li>
                     <li class="p-1 my-1 display">
                         <router-link to="/post/allpost" class="hyperlink">
-                        <a href="#" class="nav-link px-2" active>
+                        <a class="nav-link px-2" active>
                             <span class="me-2"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; <span>Post reporting </span></span>
                         </a>
                         </router-link>
                     </li>
                     <li class="p-1 my-1 display">
-                        <a href="#" class="nav-link px-2" active>
+                        <a class="nav-link px-2" active>
                             <span class="me-2"><i class="bi bi-gear-fill"></i>&nbsp; <span>User Setting </span></span>
                         </a>
                     </li>
