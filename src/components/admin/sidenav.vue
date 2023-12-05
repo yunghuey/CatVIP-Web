@@ -56,9 +56,11 @@
                        
                     </li>
                     <li class="p-1 my-1 display">
+                        <router-link to="/post/allpost" class="hyperlink">
                         <a href="#" class="nav-link px-2" active>
                             <span class="me-2"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; <span>Post reporting </span></span>
                         </a>
+                        </router-link>
                     </li>
                     <li class="p-1 my-1 display">
                         <a href="#" class="nav-link px-2" active>
