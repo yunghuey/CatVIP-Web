@@ -5,7 +5,7 @@
                     <span class="navbar-toggler-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"></span>
             </button>
 
-            <a class="navbar-brand fw-bold me-auto" href="#">CatViP</a>
+            <a class="navbar-brand fw-bold me-auto">CatViP</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -43,21 +43,19 @@
            <nav class="navbar">
                 <ul class="navbar-nav">
                     <li class="p-1 my-1 display">
-                        <router-link to="/" class="hyperlink"> 
-                            <a href="#" class="nav-link px-2" active>
+                        <router-link to="/seller" class="hyperlink"> 
+                            <a class="nav-link px-2" active>
                                 <span class="me-2"><i class="bi bi-speedometer"></i>&nbsp; <span>Dashboard</span></span>
                             </a>
-                        </router-link>
+                            </router-link>
                     </li>
                     <li class="p-1 my-1 display">
-                        <router-link to="/expertview" class="hyperlink"> 
-                            <a href="#" class="nav-link px-2" active>
+                        <router-link to="/seller" class="hyperlink"> 
+                            <a class="nav-link px-2" >
                                 <span class="me-2"><i class="bi bi-boxes"></i>&nbsp; <span>Product </span></span>
                             </a>
                         </router-link>
-                       
                     </li>
-                   
                 </ul>
            </nav>
 
@@ -72,12 +70,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 export default {
     name: 'Navbar',
-    mounted(){
-        let user = localStorage.getItem('token');
-        if (!user){
-           this.$router.push({name: 'Login'});
-        }
-    },
     methods: {
         logout(){
             localStorage.removeItem('token');

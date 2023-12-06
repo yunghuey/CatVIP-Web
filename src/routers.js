@@ -6,6 +6,7 @@ import ForgotPassword from "./components/authentication/ForgotPassword.vue";
 import ExpertView from "./components/admin/expert/ExpertView.vue";
 import ExpertForm from  "./components/admin/expert/ExpertForm.vue";
 import AllPost from "./components/admin/post/AllPost.vue";
+import SellerHome from "./components/seller/sellerhome.vue";
 import {createRouter, createWebHashHistory} from 'vue-router';
 
 const routes = [
@@ -43,7 +44,12 @@ const routes = [
         name: 'AllPost',
         component: AllPost,
         path: '/post/allpost'
-    }
+    },
+    {
+        name: 'Seller',
+        component: SellerHome,
+        path: '/seller'
+    },
 
 ];
 

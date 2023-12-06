@@ -41,7 +41,8 @@ export default{
     mounted(){
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
-        if (!user || seller == true){
+        if (!user || seller == "yes"){
+            console.log("got rejected in Home");
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
            this.$router.push({name: 'Login'});

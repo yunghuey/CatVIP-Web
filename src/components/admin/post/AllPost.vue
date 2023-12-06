@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 fw-bold fs-3">Put your title here</div>
-            </div>
+            </div>  
         </div>
     </main>
 </template>
@@ -41,3 +41,17 @@ export default{
     }
 }
 </script>
+
+<style scoped>
+main{
+    margin-left: 10px;
+    padding-left: 10px;
+}
+@media (min-width: 992px){
+    
+    main{
+        margin-left: 250px;
+    }
+  
+}
+</style>

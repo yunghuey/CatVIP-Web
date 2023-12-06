@@ -121,10 +121,10 @@ export default{
     mounted(){
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
-        if (!user || seller == true){
+        if (!user || seller == "yes"){
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
-            this.$router.push({name:'Login'});
+           this.$router.push({name: 'Login'});
         }
         this.getPendingFunc();
     },
