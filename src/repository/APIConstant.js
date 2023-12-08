@@ -14,4 +14,8 @@ export const ApiConstant = {
   GetApplicationByIdURL: `${apiUrl}expert/GetApplicationById/`,
   GetAllApplicationURL: `${apiUrl}expert/GetApplications`,
   UpdateExpertURL: `${apiUrl}Expert/UpateExpertApplicationStatus`,
+
+  // User
+  GetUserByIdURL: `${apiUrl}user/GetUserInfoById/`,
+
 };

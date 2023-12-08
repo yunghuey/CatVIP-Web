@@ -9,7 +9,7 @@
             <div v-if="hasData == true">
                 <div class="card mt-3 ps-3">
                     <div class="card-body">
-                        <div class="row col-8">Full name : <span></span></div>
+                        <div class="row col-8">Full name : <span v-text="fullname"></span></div>
                         <div class="row col-8">Description: <span v-text="form.description"></span></div>
                         <div class="row col-8">Application Date: <span v-text="formatDate(form.dateTime)"></span></div>
                         <div class="row col-8">Document: <span></span></div>
@@ -77,6 +77,7 @@ export default{
             status: "",
             form: null,
             hasData: false,
+            fullname: "",
         }
 
     },
@@ -136,6 +137,7 @@ export default{
                 res => {
                     this.form = res.data;
                     this.hasData = true;
+                    this.getNameById(this.form.catOnwerId);
                 }
             ).catch(
                 error => {
@@ -149,6 +151,34 @@ export default{
                 }
             );
 
+        },
+        getNameById(CatOwnerId){
+            try{
+                let token = localStorage.getItem('token');
+                token = token.substring(1, token.length -1);
+                var header = {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer " + token,
+                };
+                var url = ApiConstant.GetUserByIdURL + CatOwnerId;
+                axios.get(
+                    url, 
+                    {headers: header}
+                ).then(
+                    res => {
+                        console.log(res.data);
+                        this.fullname = res.data.fullName;
+                    }
+                )
+                .catch(
+                    error => {
+                        window.alert("Error in loading data");
+
+                    }
+                );
+            } catch(e){
+                alert(e);
+            }
         }
     }
 }
