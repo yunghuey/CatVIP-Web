@@ -17,6 +17,11 @@
                         <input :class="{'error-sign': isPwdError}" class="form-control my-2 border-3" type="password" v-model="password" placeholder="Enter password"/>
                         <span :class="{'text-danger': isPwdError}">{{ pwdErrorMessage}}</span>
 
+                        <div v-if="loading">
+                            <p>Loading...</p>
+                        </div>
+
+
                         <div class="text-end"><router-link to="/forgotpassword" class="hyperlink">Forgot password?</router-link> </div>
 
                         <div class="text-center"><input type="submit" value="Sign In" class="btn" v-on:click="loginFunc"/></div>
@@ -50,11 +55,13 @@ import axios from 'axios';
                 usernameErrorMessage: '',
                 isPwdError: false,
                 pwdErrorMessage: '',
+                loading: false,
       
             }
         },
         methods: {
             async loginFunc() {
+                this.loading = true;
 
                 this.isUsernameError = false;
                 this.isPwdError = false;
@@ -100,9 +107,16 @@ import axios from 'axios';
                         }
                     }
                 } catch (error) {
-                    this.isUsernameError = true;
-                    this.isPwdError = true;
-                    this.pwdErrorMessage = "Username or password is invalid";
+                    if (error.response && error.response.status == 401){
+                        this.isUsernameError = true;
+                        this.isPwdError = true;
+                        this.pwdErrorMessage = "Username or password is invalid";
+                    } else{
+                        this.pwdErrorMessage = "Network issue. Please try again later";
+                    }
+                    
+                }finally{
+                    this.loading = false;
                 }
             },
             // login username: admin, password: abc12345, isMobileLogin: false
@@ -110,6 +124,7 @@ import axios from 'axios';
         mounted(){
             let user = localStorage.getItem('token');
             let seller = localStorage.getItem('isSeller');
+            // refresh token
             if (user && seller == false){
                 this.$router.push({name:'Home'})
             } else if (user && seller == true){

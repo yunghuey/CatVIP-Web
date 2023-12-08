@@ -59,6 +59,8 @@ export default{
            this.$router.push({name: 'Login'});
         }
         this.id = this.$route.params.id;
+        this.getSingleForm();
+
     },
     data(){
         return {
@@ -66,6 +68,7 @@ export default{
             id : 0,
             comment: "",
             status: null,
+            form: null,
         }
 
     },
@@ -91,7 +94,37 @@ export default{
             } catch(e){
                 console.log(e.response.status);
             }
+        },
+        // havent test
+        getSingleForm(){
+            let token = localStorage.getItem('token');
+            token = token.substring(1, token.length -1);
+            var header = {
+                "Content-Type": "application/json",
+                "Authorization": "bearer " + token,
+            };
+            var url = ApiConstant.GetApplicationByIdURL + this.id;
+
+            axios.get(
+                url, {headers: header}
+            ).then(
+                res => {
+                    this.form = res.data;
+                    console.log(this.form);
+                }
+            ).catch(
+                error => {
+                    if(error.response && error.response.status === 401){
+                        window.alert("401: Not allow to load data");
+                    }
+
+                    if(error.response && error.response.status === 403){
+                        window.alert("403: not applicable in web");
+                    }
+                }
+            );
         }
+
     }
 
 }
