@@ -53,8 +53,11 @@
                     </thead>
                     <tbody>
                         <tr v-for="(exp, index) in allexperts" :key="index">
-                            <td v-index="index+1"></td>
+                            <td v-text="index+1"></td>
                             <td></td>
+                            <td v-text="exp.status"></td>
+                            <td v-text="exp.rejectedReason"></td>
+                            <td><router-link :to="{name: 'ExpertForm', params: {id: exp.id}}" class="hyperlink">View</router-link></td>
                         </tr>
                     </tbody>
                 </table>
@@ -108,6 +111,31 @@ export default{
                 }
             );
         },
+        getAllFunc(){ 
+            // note: waiting update, havent fully tested
+            let token = localStorage.getItem('token');
+            token = token.substring(1, token.length -1);
+            var header = {
+                "Content-Type": "application/json",
+                "Authorization": "bearer " + token,
+            };
+            // console.log(token);
+            axios.get(
+                ApiConstant.GetAllApplicationURL, 
+                {headers: header}    
+            ).then(
+                res => {
+                    this.allexperts = res.data;
+                    console.log(this.allexperts);
+                }
+            ).catch(
+                error => {
+                    if(error.response && error.response.status === 401){
+                        window.alert("401: Unable to load data");
+                    }
+                }
+            );
+        },
         formatDate(dateString){
             let date = new Date(dateString);
             let year = date.getFullYear();
@@ -127,6 +155,7 @@ export default{
            this.$router.push({name: 'Login'});
         }
         this.getPendingFunc();
+        this.getAllFunc();
     },
 }
 

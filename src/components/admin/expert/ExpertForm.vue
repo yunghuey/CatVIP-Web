@@ -6,35 +6,43 @@
             <div class="row">
                 <div class="col-md-12 fw-bold fs-3">Expert Application</div>
             </div>
-            <div class="card mt-3 ps-3">
-                <div class="card-body">
-                    <div class="row">Full name : <span></span></div>
-                    <div class="row">Description: <span></span></div>
-                    <div class="row">Document: <span></span></div>
-                    <div class="row">
-                        <div class="col-3 col-sm-6">
-                            <select class="form-select" required v-model="status">
-                                <option selected>Choose a decision</option>
-                                <option value="true">Accept</option>
-                                <option value="false">Reject</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 col-sm-6"> 
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" v-model="comment"></textarea>
-                                <label for="floatingTextarea">Comments</label>
+            <div v-if="hasData == true">
+                <div class="card mt-3 ps-3">
+                    <div class="card-body">
+                        <div class="row col-8">Full name : <span></span></div>
+                        <div class="row col-8">Description: <span v-text="form.description"></span></div>
+                        <div class="row col-8">Application Date: <span v-text="formatDate(form.dateTime)"></span></div>
+                        <div class="row col-8">Document: <span></span></div>
+                        <div class="row">
+                            <div class="col-8 col-sm-6">
+                                <select class="form-select" required v-model="status">
+                                    <option value="" selected>Choose a decision</option>
+                                    <option value="1">Accept</option>
+                                    <option value="3">Reject</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 justify-content-end">
-                            <input type="submit" class="btn" v-on:click="updateStatus()">
+                        <div class="row">
+                            <div class="col-8 col-sm-6"> 
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" v-model="comment"></textarea>
+                                    <label for="floatingTextarea">Comments</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 justify-content-end">
+                                <input type="submit" class="btn" v-on:click="updateStatus()">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div v-else>
+                <span v-text="hasData"></span>
+            </div>
+           
         </div>
     </main>
 </template>
@@ -59,16 +67,16 @@ export default{
            this.$router.push({name: 'Login'});
         }
         this.id = this.$route.params.id;
-        this.getSingleForm();
+        this.getSingleForm(this.id);
 
     },
     data(){
         return {
-            currentForm: null,
             id : 0,
             comment: "",
-            status: null,
+            status: "",
             form: null,
+            hasData: false,
         }
 
     },
@@ -78,39 +86,56 @@ export default{
             console.log(this.comment);
             console.log(this.status);
             try{
-                let user = localStorage.getItem('token');
+                let token = localStorage.getItem('token');
+                token = token.substring(1, token.length -1);
                 var header = {
                     "Content-Type": "application/json",
                     "Authorization": "bearer " + token,
                 };
+                var body = {
+                    "applictionId": this.id,
+                    "statusId": this.status,
+                    "rejectedReason": this.comment
+                };
+
+                console.log(token);
                 const result = axios.put(
                     ApiConstant.UpdateExpertURL,
+                    body,
                     {headers: header}
                 );
+                print(result.status);
                 if (result.status == 200){
                     alert("Updated expert successfully");
                     this.$router.push({name:'ExpertView'});
                 }
             } catch(e){
-                console.log(e.response.status);
+                console.log(e.response);
             }
         },
-        // havent test
-        getSingleForm(){
+        formatDate(dateString){
+            let date = new Date(dateString);
+            let year = date.getFullYear();
+            let month = ('0' + (date.getMonth() + 1)).slice(-2);
+            let day = ('0' + date.getDate()).slice(-2);
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            return `${year}-${month}-${day} ${hours}:${minutes}`;
+        },
+        getSingleForm(id){
             let token = localStorage.getItem('token');
             token = token.substring(1, token.length -1);
             var header = {
                 "Content-Type": "application/json",
                 "Authorization": "bearer " + token,
             };
-            var url = ApiConstant.GetApplicationByIdURL + this.id;
-
+            var url = ApiConstant.GetApplicationByIdURL + id;
             axios.get(
                 url, {headers: header}
             ).then(
                 res => {
                     this.form = res.data;
-                    console.log(this.form);
+                    this.hasData = true;
                 }
             ).catch(
                 error => {
@@ -123,10 +148,9 @@ export default{
                     }
                 }
             );
+
         }
-
     }
-
 }
 </script>
 
