@@ -26,7 +26,7 @@
                     <tbody>
                         <tr v-for="(user, index) in pendings" :key="index">
                             <td v-text="index+1"></td>
-                            <td></td>
+                            <td v-text="getNameById(user.catOnwerId)"></td>
                             <td v-text="formatDate(user.dateTime)"></td>
                             <td><router-link :to="{name: 'ExpertForm', params: {id: user.id}}" class="hyperlink">View</router-link></td>
                             <td v-text="user.id" hidden></td>
@@ -46,6 +46,7 @@
                             <th>No</th>
                             <th>Full name</th>
                             <th>Status</th>
+                            <th>Date Time</th>
                             <th>Remark</th>
                             <th>View More</th>
                             <th hidden>Id</th>
@@ -53,8 +54,12 @@
                     </thead>
                     <tbody>
                         <tr v-for="(exp, index) in allexperts" :key="index">
-                            <td v-index="index+1"></td>
-                            <td></td>
+                            <td v-text="index+1"></td>
+                            <td v-text="getNameById(exp.catOnwerId)"></td>
+                            <td v-text="exp.status"></td>
+                            <td v-text="formatDate(exp.dateTime)"></td>
+                            <td v-text="exp.rejectedReason"></td>
+                            <td><router-link :to="{name: 'ExpertForm', params: {id: exp.id}}" class="hyperlink">View</router-link></td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,6 +82,7 @@ export default{
         return {
             pendings: [],
             allexperts: [],
+            fullname: "",
         }
     },
     components:{
@@ -108,6 +114,31 @@ export default{
                 }
             );
         },
+        getAllFunc(){ 
+            // note: waiting update, havent fully tested
+            let token = localStorage.getItem('token');
+            token = token.substring(1, token.length -1);
+            var header = {
+                "Content-Type": "application/json",
+                "Authorization": "bearer " + token,
+            };
+            // console.log(token);
+            axios.get(
+                ApiConstant.GetAllApplicationURL, 
+                {headers: header}    
+            ).then(
+                res => {
+                    this.allexperts = res.data;
+                    console.log(this.allexperts);
+                }
+            ).catch(
+                error => {
+                    if(error.response && error.response.status === 401){
+                        window.alert("401: Unable to load data");
+                    }
+                }
+            );
+        },
         formatDate(dateString){
             let date = new Date(dateString);
             let year = date.getFullYear();
@@ -117,6 +148,36 @@ export default{
             let minutes = ('0' + date.getMinutes()).slice(-2);
             return `${year}-${month}-${day} ${hours}:${minutes}`;
         },
+        getNameById(CatOwnerId){
+            try{
+                let token = localStorage.getItem('token');
+                token = token.substring(1, token.length -1);
+                var header = {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer " + token,
+                };
+                var url = ApiConstant.GetUserByIdURL + CatOwnerId;
+                axios.get(
+                    url, 
+                    {headers: header}
+                ).then(
+                    res => {
+                        console.log(res.data);
+                        this.fullname = res.data.fullName;
+                    }
+                )
+                .catch(
+                    error => {
+                        window.alert("Error in loading data");
+
+                    }
+                );
+            } catch(e){
+
+            }
+
+            return this.fullname;
+        }
     },
     mounted(){
         let user = localStorage.getItem('token');
@@ -127,6 +188,7 @@ export default{
            this.$router.push({name: 'Login'});
         }
         this.getPendingFunc();
+        this.getAllFunc();
     },
 }
 
