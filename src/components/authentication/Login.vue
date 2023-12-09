@@ -120,6 +120,23 @@ import axios from 'axios';
                 }
             },
             // login username: admin, password: abc12345, isMobileLogin: false
+            async refreshToken(token){
+                try{
+                    token = token.substring(1, token.length -1);
+                    var header = {
+                        "Content-Type": "application/json",
+                        'token' : token
+                    };
+                    console.log(header);
+                    let result = await axios.put(ApiConstant.RefreshURL, null, {headers: header});
+                    if (result.status === 200){
+                        localStorage.setItem("token", JSON.stringify(result.data));
+                    }
+                }catch (e){
+                    console.log(e);
+                }finally {
+                }
+            }
         },
         mounted(){
             let user = localStorage.getItem('token');

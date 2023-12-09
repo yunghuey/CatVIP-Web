@@ -213,15 +213,6 @@ export default {
             return formattedMaxDate;
         }
     },
-    mounted(){
-        let user = localStorage.getItem('token');
-        let seller = localStorage.getItem('isSeller');
-        if (user && seller == false){
-            this.$router.push({name:'Home'})
-        } else if (user && seller == true){
-            this.$router.push({name:'Seller'});
-        }
-    }
 }
 </script>
 
