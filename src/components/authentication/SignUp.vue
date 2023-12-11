@@ -42,11 +42,11 @@
             <div class="col-2">
                 <label for="gender" class="form-label">Gender *</label>
             </div>
-            <div class="form-check col-3">
+            <div class="form-check col-2">
                 <input class="form-check-input" type="radio" name="gender" id="male-gender" value="true" v-model="gender">
                 <label class="form-check-label" for="male-gender">Male </label>
             </div>
-            <div class="form-check col-3">
+            <div class="form-check col-2">
                 <input class="form-check-input" type="radio" name="gender" id="female-gender" value="false" v-model="gender">
                 <label class="form-check-label" for="female-gender">Female</label>
             </div>
@@ -78,7 +78,6 @@ export default {
     name: 'SignUp',
     data(){
         return{
-            selectedDate: '',
             username: '',
             email: '',
             password: '',

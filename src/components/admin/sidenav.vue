@@ -18,6 +18,11 @@
                             <i class="bi bi-person-fill"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li><router-link :to="{name: 'EditProfile'}" class="hyperlink"> 
+                                <a class="dropdown-item" href="#">Edit profile</a>
+                            </router-link>
+                            </li> 
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item"  v-on:click="logout">Logout</a></li>
                         </ul>
                     </li>
@@ -61,11 +66,6 @@
                             <span class="me-2"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; <span>Post reporting </span></span>
                         </a>
                         </router-link>
-                    </li>
-                    <li class="p-1 my-1 display">
-                        <a class="nav-link px-2" active>
-                            <span class="me-2"><i class="bi bi-gear-fill"></i>&nbsp; <span>User Setting </span></span>
-                        </a>
                     </li>
                 </ul>
            </nav>
