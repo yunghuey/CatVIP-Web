@@ -1,5 +1,5 @@
 // api-constants.js
-const apiUrl = "http://172.16.88.4:7015/api/";
+const apiUrl = "http://10.131.78.121:7015/api/";
 
 export const ApiConstant = {
   URL: apiUrl,
@@ -8,6 +8,8 @@ export const ApiConstant = {
   RefreshURL: `${apiUrl}auth/refresh`,
   RegisterURL: `${apiUrl}auth/register`,
   ForgotPasswordURL: `${apiUrl}auth/forgot-password`,
+  UpdateProfileURL: `${apiUrl}auth/editProfile`,
+  GetProfileURL: `${apiUrl}auth/GetUserInfo`,
 
   // Expert
   GetPendingExpertURL: `${apiUrl}expert/GetPendingApplications`,

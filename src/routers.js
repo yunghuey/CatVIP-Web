@@ -3,6 +3,7 @@ import Home from "./components/admin/Home.vue";
 import Login from "./components/authentication/Login.vue";
 import SignUp from "./components/authentication/SignUp.vue";
 import ForgotPassword from "./components/authentication/ForgotPassword.vue";
+import EditProfile from "./components/authentication/EditProfile.vue";
 import ExpertView from "./components/admin/expert/ExpertView.vue";
 import ExpertForm from  "./components/admin/expert/ExpertForm.vue";
 import AllPost from "./components/admin/post/AllPost.vue";
@@ -49,6 +50,11 @@ const routes = [
         name: 'Seller',
         component: SellerHome,
         path: '/seller'
+    },
+    {
+        name: 'EditProfile',
+        component: EditProfile,
+        path: '/editprofile'
     },
 
 ];
