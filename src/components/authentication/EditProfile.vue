@@ -78,14 +78,14 @@ export default{
             this.$router.push({name: 'Login'});
         }
         if (seller == "yes"){
-            isSeller = true;
+            this.isSeller = true;
         } 
         await this.getUserInfo();
     },
     data(){
         return {
             token: '',
-            isSeller : false,
+            isSeller: false,
             dob: '',
             fullname: '',
             gender: '',
@@ -127,9 +127,10 @@ export default{
                 this.displayMessage = false;
                 return;
             }
-            console.log("testing");
             console.log(this.profileimg64);
-            this.profileimg64 = this.profileimg64.split(',')[1];
+            if (this.profileimg64 != ""){
+                this.profileimg64 = this.profileimg64.split(',')[1];
+            }
             var body = {
                 fullName : this.fullname,
                 dateOfBirth: this.dob,

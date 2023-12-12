@@ -18,7 +18,10 @@
                             <i class="bi bi-person-fill"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Edit profile</a></li>
+                            <li><router-link :to="{name: 'EditProfile'}" class="hyperlink"> 
+                                <a class="dropdown-item" href="#">Edit profile</a>
+                            </router-link>
+                            </li> 
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#"  v-on:click="logout">Logout</a></li>
                         </ul>
