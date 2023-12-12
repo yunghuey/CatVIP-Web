@@ -182,8 +182,10 @@ export default{
                 ).then(
                     res => {
                         console.log(res.data);
+                        if (res.data.fullName == null){
+                            this.fullname = res.data.username;
+                        }
                         this.fullname = res.data.fullName;
-                        this.username = res.data.username;
                     }
                 )
                 .catch(

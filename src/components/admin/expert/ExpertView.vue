@@ -26,7 +26,7 @@
                     <tbody>
                         <tr v-for="(user, index) in pendings" :key="index">
                             <td v-text="index+1"></td>
-                            <td v-text="getNameById(user.catOnwerId)"></td>
+                            <td v-text="allpendingname[index]"></td>
                             <td v-text="formatDate(user.dateTime)"></td>
                             <td><router-link :to="{name: 'ExpertForm', params: {id: user.id}}" class="hyperlink">View</router-link></td>
                             <td v-text="user.id" hidden></td>
@@ -34,7 +34,6 @@
                     </tbody>
                 </table>
             </div>
-
             <!-- table all -->
             <div class="row">
                 <div class="col-md-12 fw-bold fs-3">Expert List</div>
@@ -55,7 +54,7 @@
                     <tbody>
                         <tr v-for="(exp, index) in allexperts" :key="index">
                             <td v-text="index+1"></td>
-                            <td v-text="getNameById(exp.catOnwerId)"></td>
+                            <td v-text="allexpertname[index]"></td>
                             <td v-text="exp.status"></td>
                             <td v-text="formatDate(exp.dateTime)"></td>
                             <td v-text="exp.rejectedReason"></td>
@@ -82,7 +81,8 @@ export default{
         return {
             pendings: [],
             allexperts: [],
-            fullname: "",
+            allpendingname: [],
+            allexpertname: [],
         }
     },
     components:{
@@ -97,22 +97,33 @@ export default{
                 "Content-Type": "application/json",
                 "Authorization": "bearer " + token,
             };
-            // console.log(token);
             axios.get(
                 ApiConstant.GetPendingExpertURL, 
                 {headers: header}    
             ).then(
                 res => {
                     this.pendings = res.data;
-                    console.log(this.pendings);
-                }
+                    this.getNameFunc(this.pendings).then((result) => {
+                        this.allpendingname = result;
+                    });
+                }   
             ).catch(
                 error => {
                     if(error.response && error.response.status === 401){
                         window.alert("401: Unable to load data");
+                    } else{
+                        console.log(error);
                     }
                 }
             );
+        },
+        async getNameFunc(infoarr){
+            var namelist = [];
+            for(let i = 0 ; i < infoarr.length; i++){
+                namelist[i] = await this.getNameById(infoarr[i].catOnwerId);
+            }   
+            console.log("namelist : " + namelist);
+            return namelist;
         },
         getAllFunc(){ 
             // note: waiting update, havent fully tested
@@ -122,15 +133,18 @@ export default{
                 "Content-Type": "application/json",
                 "Authorization": "bearer " + token,
             };
-            // console.log(token);
             axios.get(
                 ApiConstant.GetAllApplicationURL, 
                 {headers: header}    
             ).then(
                 res => {
                     this.allexperts = res.data;
-                    console.log(this.allexperts);
+                    this.getNameFunc(this.allexperts).then(
+                        (result) => {
+                            this.allexpertname = result;
+                    });   
                 }
+                
             ).catch(
                 error => {
                     if(error.response && error.response.status === 401){
@@ -148,35 +162,33 @@ export default{
             let minutes = ('0' + date.getMinutes()).slice(-2);
             return `${year}-${month}-${day} ${hours}:${minutes}`;
         },
-        getNameById(CatOwnerId){
-            try{
-                let token = localStorage.getItem('token');
-                token = token.substring(1, token.length -1);
-                var header = {
-                    "Content-Type": "application/json",
-                    "Authorization": "bearer " + token,
-                };
-                var url = ApiConstant.GetUserByIdURL + CatOwnerId;
-                axios.get(
-                    url, 
-                    {headers: header}
-                ).then(
-                    res => {
-                        console.log(res.data);
-                        this.fullname = res.data.fullName;
-                    }
-                )
-                .catch(
-                    error => {
-                        window.alert("Error in loading data");
+        async getNameById(CatOwnerId){
+            var name = "";
+            let token = localStorage.getItem('token');
+            token = token.substring(1, token.length -1);
+            var header = {
+                "Content-Type": "application/json",
+                "Authorization": "bearer " + token,
+            };
 
-                    }
-                );
-            } catch(e){
-
-            }
-
-            return this.fullname;
+            var url = ApiConstant.GetUserByIdURL + CatOwnerId;
+            
+            await axios.get(
+                url, 
+                {headers: header}
+            ).then(
+                res => {
+                    name = res.data.fullName;
+                    // console.log("name value: " + name);   
+                    return name;                 
+                }
+            )
+            .catch(
+                error => {
+                    window.alert("Error in loading data");
+                }
+            );
+                return name;
         }
     },
     mounted(){
