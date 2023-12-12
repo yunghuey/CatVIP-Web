@@ -12,35 +12,40 @@
                         <div class="row col-8">Full name : <span v-text="fullname"></span></div>
                         <div class="row col-8">Description: <span v-text="form.description"></span></div>
                         <div class="row col-8">Application Date: <span v-text="formatDate(form.dateTime)"></span></div>
-                        <div class="row col-8">Document: <span></span></div>
-                        <div class="row">
+                        <div class="row col-8">Document: <a v-on:click="showPdf(form.documentation, username)" class="download" style="text-decoration: underline;">View Document</a></div>
+                        <div v-if="form.status == 'Pending'">
+                            <div class="row">
                             <div class="col-8 col-sm-6">
-                                <select class="form-select" required v-model="status">
-                                    <option value="" selected>Choose a decision</option>
-                                    <option value="1">Accept</option>
-                                    <option value="3">Reject</option>
-                                </select>
+                                    <select class="form-select" required v-model="status" requierd @change="checkChoice()">
+                                        <option value="" selected>Choose a decision</option>
+                                        <option value="1">Accept</option>
+                                        <option value="3">Reject</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8 col-sm-6"> 
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" v-model="comment"></textarea>
-                                    <label for="floatingTextarea">Comments</label>
+                            <div class="row">
+                                <div class="col-8 col-sm-6"> 
+                                    <div class="form-floating" v-show="showCommentBox">
+                                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" v-model="comment" required></textarea>
+                                        <label for="floatingTextarea">Comments</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 justify-content-end">
+                                    <input type="submit" class="btn" v-on:click="updateStatus()">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-4 justify-content-end">
-                                <input type="submit" class="btn" v-on:click="updateStatus()">
-                            </div>
-                        </div>
+                        <div v-else>
+                            <div class="row col-8">Status : <span v-text="form.status"></span></div>
+                        </div> 
                     </div>
                 </div>
             </div>
 
             <div v-else>
-                <span v-text="hasData"></span>
+                Loading
             </div>
            
         </div>
@@ -75,17 +80,23 @@ export default{
             id : 0,
             comment: "",
             status: "",
+            showCommentBox: false,
             form: null,
             hasData: false,
             fullname: "",
+            username: "",
         }
 
     },
     methods:{
+        checkChoice(){
+            this.showCommentBox = this.status === '3';
+        }, 
         async updateStatus(){
-            console.log(this.id),
-            console.log(this.comment);
-            console.log(this.status);
+            if (this.status == "3" && this.comment == ""){
+                alert("Please insert rejected reason");
+                return;
+            }
             try{
                 let token = localStorage.getItem('token');
                 token = token.substring(1, token.length -1);
@@ -99,19 +110,17 @@ export default{
                     "rejectedReason": this.comment
                 };
 
-                console.log(token);
+                // console.log(body);
                 const result = axios.put(
                     ApiConstant.UpdateExpertURL,
                     body,
                     {headers: header}
                 );
-                print(result.status);
-                if (result.status == 200){
-                    alert("Updated expert successfully");
-                    this.$router.push({name:'ExpertView'});
-                }
+                console.log("updated expert");
+                this.$router.go(-1);
             } catch(e){
-                console.log(e.response);
+                this.hasData = false;
+                console.log(e.response.data);
             }
         },
         formatDate(dateString){
@@ -122,6 +131,12 @@ export default{
             let hours = ('0' + date.getHours()).slice(-2);
             let minutes = ('0' + date.getMinutes()).slice(-2);
             return `${year}-${month}-${day} ${hours}:${minutes}`;
+        },
+        showPdf(base64string, username){
+            const link = document.createElement('a');
+            link.href = `data:application/pdf;base64,${base64string}`;
+            link.download = username + '.pdf';
+            link.click();
         },
         getSingleForm(id){
             let token = localStorage.getItem('token');
@@ -168,6 +183,7 @@ export default{
                     res => {
                         console.log(res.data);
                         this.fullname = res.data.fullName;
+                        this.username = res.data.username;
                     }
                 )
                 .catch(
@@ -196,6 +212,9 @@ div.row{
     color: var(--dark-color);
     background-color: var(--light-color);
 }
+.download:hover{
+    cursor: pointer;
+}
 .btn:hover{
     border: 1px solid var(--dark-color);
     color: #FFF;
@@ -205,7 +224,6 @@ div.row{
     
     main{
         margin-left: 250px;
-    }
-  
+    } 
 }
 </style>
