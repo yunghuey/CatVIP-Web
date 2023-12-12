@@ -9,12 +9,12 @@
             </div>
             <div class="row my-2">
             <div class="col-8">
-                <span :class="{'text-success': displayMessage}" style="white-space: pre-line">{{ updateMessage}}</span>
+                <b :class="{'text-success': displayMessage}" style="white-space: pre-line; font-size: large;">{{ updateMessage}}</b>
             </div>
              </div>
             <div class="row">
                 <div class="image-container">
-                    <img :src="'data:image/png;base64,' + this.profileimg64" alt="" class="profile-image">
+                    <img :src="getImageSource()" alt="" class="profile-image">
                     <i class="bi bi-pencil-fill edit-icon" @click="triggerFileInput"></i>
                     <input class="form-control" type="file" id="formFile" ref="fileInput" @change="onFileSelected" accept="image/*" hidden>
                 </div>
@@ -67,9 +67,10 @@ export default{
         Navbar,
         Navbar2,
     },
-    mounted(){
+    async mounted(){
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
+        this.token = user.substring(1, user.length -1);
         if (!user){
             console.log("got rejected in Home");
             localStorage.removeItem('token');
@@ -79,10 +80,11 @@ export default{
         if (seller == "yes"){
             isSeller = true;
         } 
-        this.getUserInfo();
+        await this.getUserInfo();
     },
     data(){
         return {
+            token: '',
             isSeller : false,
             dob: '',
             fullname: '',
@@ -91,7 +93,7 @@ export default{
             profileimg64 : '',
             selectedImage: null,
             updateMessage: '',
-            displayMessage: false,
+            displayMessage: true,
         }
     },
     methods:{
@@ -103,17 +105,13 @@ export default{
 
             if (this.selectedImage && this.selectedImage.type.startsWith('image/')) {
                 const reader = new FileReader();
-
                 reader.onload = () => {
                 // `reader.result` contains the base64 string
                 const base64Url = reader.result;
-
                 // Do something with the base64 string, such as assigning it to a variable
                 const [, base64String] = base64Url.split(',');
-
                 this.profileimg64 = base64String;
                 };
-
                 reader.readAsDataURL(this.selectedImage);
             } 
             else {
@@ -122,12 +120,16 @@ export default{
             }
         },
         async updateProfile(){
-            if (!this.fullname || !this.dob || !this.gender){
+            this.displayMessage = true;
+            this.updateMessage = "Loading...";
+            if (!this.fullname || !this.dob || this.gender == null){
+                this.updateMessage = "Please fill up all the form";
+                this.displayMessage = false;
                 return;
             }
-            let token = localStorage.getItem('token');
-            token = token.substring(1, token.length -1);
+            console.log("testing");
             console.log(this.profileimg64);
+            this.profileimg64 = this.profileimg64.split(',')[1];
             var body = {
                 fullName : this.fullname,
                 dateOfBirth: this.dob,
@@ -137,26 +139,30 @@ export default{
                 latitude: 0,
                 longitude: 0,
             };
-            console.log(body);
             var header = {
                 "Content-Type": "application/json",
-                "Authorization": "bearer " + token,
+                "Authorization": "bearer " + this.token,
             };
             var url = ApiConstant.UpdateProfileURL;
-            const result = await axios.put(
+            await axios.put(
                 url, body ,
                 {headers: header}
             ).then( 
                 res => { 
                     if (res.status == 200) { 
-                        this.updateMessage = 'Profile has been updated';
+                        this.updateMessage = '';
+                        this.displayMessage = false;
+                        this.$router.go();
+                    } else{
+                        this.updateMessage = res.status;
                         this.displayMessage = true;
-                        this.getUserInfo();
                     }
              }
             ).catch( 
                 error => { 
                     console.log(error.response);
+                    this.updateMessage = 'Error when updating';
+                        this.displayMessage = true;
                 }
             );
         },
@@ -172,6 +178,10 @@ export default{
             if (this.profileimg64 && this.profileimg64 !== "") {
                 // decode the string
                 // create blob
+
+                if (!this.profileimg64.startsWith('data:image/png;base64,')) {
+                    this.profileimg64 = 'data:image/png;base64,' + this.profileimg64;
+                }                
                 const blob = this.dataURLtoBlob(this.profileimg64);
                                 // create data url from blob
                 const dataUrl = URL.createObjectURL(blob);
@@ -197,12 +207,10 @@ export default{
             // Create a Blob from the ArrayBuffer
             return new Blob([ab], { type: mimeString });
         },
-        getUserInfo(){
-            let token = localStorage.getItem('token');
-            token = token.substring(1, token.length -1);
+        async getUserInfo(){
             var header = {
                 "Content-Type": "application/json",
-                "Authorization": "bearer " + token,
+                "Authorization": "bearer " + this.token,
             };
             var url = ApiConstant.GetProfileURL;
             axios.get(

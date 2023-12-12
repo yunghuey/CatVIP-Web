@@ -7,12 +7,13 @@
                 <div class="col-md-12 fw-bold fs-3">Expert Application</div>
             </div>
             <div v-if="hasData == true">
-                <div class="card mt-3 ps-3">
+                <div class="card my-3 ps-3">
                     <div class="card-body">
-                        <div class="row col-8">Full name : <span v-text="fullname"></span></div>
-                        <div class="row col-8">Description: <span v-text="form.description"></span></div>
-                        <div class="row col-8">Application Date: <span v-text="formatDate(form.dateTime)"></span></div>
-                        <div class="row col-8">Document: <a v-on:click="showPdf(form.documentation, username)" class="download" style="text-decoration: underline;">View Document</a></div>
+                        <p><img :src="getImageSource()" alt=""></p>
+                        <p>Full name : <span v-text="fullname"></span></p>
+                        <p>Description: <span v-text="form.description"></span></p>
+                        <p>Application Date: <span v-text="formatDate(form.dateTime)"></span></p>
+                        Document: <a v-on:click="showPdf(form.documentation, username)" class="download" style="text-decoration: underline;">View Document</a>
                         <div v-if="form.status == 'Pending'">
                             <div class="row">
                             <div class="col-8 col-sm-6">
@@ -58,6 +59,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ApiConstant } from "../../../repository/APIConstant.js"
 import axios from 'axios';
+import defaultProfileImage from '@/assets/profileimage.png';
+
 export default{
     name:'ExpertForm',
     components:{
@@ -85,10 +88,33 @@ export default{
             hasData: false,
             fullname: "",
             username: "",
+            profileimg64: ""
         }
 
     },
     methods:{
+        getImageSource() {
+            if (this.profileimg64 && this.profileimg64 !== "") {
+                this.profileimg64 = 'data:image/png;base64,' + this.profileimg64;
+                const blob = this.dataURLtoBlob(this.profileimg64);
+                const dataUrl = URL.createObjectURL(blob);
+                return dataUrl;
+            } else {
+                return defaultProfileImage;
+            }
+        },
+        dataURLtoBlob(dataURL) {
+            const byteString = atob(dataURL.split(',')[1]);
+            const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+
+            // Create a Blob from the ArrayBuffer
+            return new Blob([ab], { type: mimeString });
+        },
         checkChoice(){
             this.showCommentBox = this.status === '3';
         }, 
@@ -180,15 +206,11 @@ export default{
                     url, 
                     {headers: header}
                 ).then(
-                    res => {
-                        console.log(res.data);
-                        if (res.data.fullName == null){
-                            this.fullname = res.data.username;
-                        }
+                    res => {                       
                         this.fullname = res.data.fullName;
+                        this.profileimg64 = res.data.profileImage;
                     }
-                )
-                .catch(
+                ).catch(
                     error => {
                         window.alert("Error in loading data");
 
@@ -216,6 +238,10 @@ div.row{
 }
 .download:hover{
     cursor: pointer;
+}
+img{
+    width: 170px;
+    height: 170px;
 }
 .btn:hover{
     border: 1px solid var(--dark-color);

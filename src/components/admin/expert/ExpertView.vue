@@ -79,6 +79,7 @@ export default{
     name:'ExpertView',
     data(){
         return {
+            token: "",
             pendings: [],
             allexperts: [],
             allpendingname: [],
@@ -89,13 +90,10 @@ export default{
         Navbar,
     },
     methods:{
-        getPendingFunc(){ 
-            // note: waiting update, havent fully tested
-            let token = localStorage.getItem('token');
-            token = token.substring(1, token.length -1);
+        async getPendingFunc(){ 
             var header = {
                 "Content-Type": "application/json",
-                "Authorization": "bearer " + token,
+                "Authorization": "bearer " + this.token,
             };
             axios.get(
                 ApiConstant.GetPendingExpertURL, 
@@ -125,13 +123,10 @@ export default{
             console.log("namelist : " + namelist);
             return namelist;
         },
-        getAllFunc(){ 
-            // note: waiting update, havent fully tested
-            let token = localStorage.getItem('token');
-            token = token.substring(1, token.length -1);
+        async getAllFunc(){ 
             var header = {
                 "Content-Type": "application/json",
-                "Authorization": "bearer " + token,
+                "Authorization": "bearer " + this.token,
             };
             axios.get(
                 ApiConstant.GetAllApplicationURL, 
@@ -164,11 +159,9 @@ export default{
         },
         async getNameById(CatOwnerId){
             var name = "";
-            let token = localStorage.getItem('token');
-            token = token.substring(1, token.length -1);
             var header = {
                 "Content-Type": "application/json",
-                "Authorization": "bearer " + token,
+                "Authorization": "bearer " + this.token,
             };
 
             var url = ApiConstant.GetUserByIdURL + CatOwnerId;
@@ -191,16 +184,17 @@ export default{
                 return name;
         }
     },
-    mounted(){
+    async mounted(){
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
+        this.token = user.substring(1, user.length -1);
         if (!user || seller == "yes"){
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
            this.$router.push({name: 'Login'});
         }
-        this.getPendingFunc();
-        this.getAllFunc();
+        await this.getPendingFunc();
+        await this.getAllFunc();
     },
 }
 
