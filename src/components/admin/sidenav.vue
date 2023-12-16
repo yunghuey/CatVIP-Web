@@ -53,13 +53,38 @@
                         </router-link>
                     </li>
                     <li class="p-1 my-1 display">
-                        <router-link to="/expert/view" class="hyperlink"> 
-                            <a class="nav-link px-2" active>
-                                <span class="me-2"><i class="bi bi-mortarboard-fill"></i>&nbsp; <span>Expert application </span></span>
-                            </a>
-                        </router-link>
-                       
+                        <a class="nav-link px-3 sidebar-link"
+                           data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <span class="me-2"><i class="bi bi-mortarboard-fill"></i></span>
+                            <span>Expert</span>
+                            <span class="right-icon ms-auto">
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </a>
+                        <div class="collapse" id="collapseExample">
+                            <ul class="navbar-nav ps-3">
+                                <li>
+                                    <router-link :to="{name: 'Expert'}" class="hyperlink"> 
+                                    <a class="nav-link px-2" active>
+                                        <span class="me-2"><i class="bi bi-mortarboard-fill"></i>&nbsp; <span>All application </span></span>
+                                    </a>
+                                    </router-link>  
+                                </li>
+                                <li>
+                                    <router-link :to="{name: 'ExpertPending'}" class="hyperlink"> 
+                                    <a class="nav-link px-2" active>
+                                        <span class="me-2"><i class="bi bi-alarm"></i>&nbsp; <span>Pending application </span></span>
+                                    </a>
+                                    </router-link>  
+                                </li>
+                            </ul>
+                        </div>
                     </li>
+                    
+                    
+
+
+
                     <li class="p-1 my-1 display">
                         <router-link to="/post/allpost" class="hyperlink">
                         <a class="nav-link px-2" active>
@@ -116,6 +141,18 @@ export default {
 }
 .hyperlink{
     text-decoration: none;
+}
+.sidebar-link{
+    display: flex;
+    align-items: center;
+}
+.sidebar-link .right-icon{
+    display: inline-flex;
+    transition: all ease 0.25s;
+}
+
+.sidebar-link[aria-expanded='true'] .right-icon{
+    transform: rotate(180deg);
 }
 
 @media (min-width: 992px){

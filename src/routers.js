@@ -6,6 +6,7 @@ import ForgotPassword from "./components/authentication/ForgotPassword.vue";
 import EditProfile from "./components/authentication/EditProfile.vue";
 import ExpertView from "./components/admin/expert/ExpertView.vue";
 import ExpertForm from  "./components/admin/expert/ExpertForm.vue";
+import ExpertPending from  "./components/admin/expert/ExpertPending.vue";
 import AllPost from "./components/admin/post/AllPost.vue";
 import SellerHome from "./components/seller/sellerhome.vue";
 import {createRouter, createWebHashHistory} from 'vue-router';
@@ -42,6 +43,11 @@ const routes = [
         path: '/expert/form/:id'
     },
     {
+        name: 'ExpertPending',
+        component: ExpertPending,
+        path: '/expert/pending'
+    },
+    {
         name: 'AllPost',
         component: AllPost,
         path: '/post/allpost'
@@ -56,7 +62,6 @@ const routes = [
         component: EditProfile,
         path: '/editprofile'
     },
-
 ];
 
 const router = createRouter({
