@@ -46,7 +46,7 @@
            <nav class="navbar">
                 <ul class="navbar-nav">
                     <li class="p-1 my-1 display">
-                        <router-link to="/" class="hyperlink"> 
+                        <router-link :to="{name: 'Home'}" class="hyperlink"> 
                             <a class="nav-link px-2" active>
                                 <span class="me-2"><i class="bi bi-speedometer"></i>&nbsp; <span>Dashboard</span></span>
                             </a>
@@ -86,7 +86,7 @@
 
 
                     <li class="p-1 my-1 display">
-                        <router-link to="/post/allpost" class="hyperlink">
+                        <router-link :to="{name: 'AllPost'}" class="hyperlink">
                         <a class="nav-link px-2" active>
                             <span class="me-2"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; <span>Post reporting </span></span>
                         </a>
