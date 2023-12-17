@@ -208,6 +208,15 @@ export default{
         }
         await this.getAllFunc();
     },
+    created() {
+        const reloaded = localStorage.getItem('reloadedall');
+        if (reloaded == null || reloaded !== 'true') {
+            localStorage.setItem('reloadedall', 'true');
+            location.reload();
+        } else{
+            localStorage.setItem('reloadedall', 'false');
+        }
+    }
 }
 
 </script>
