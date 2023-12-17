@@ -115,7 +115,7 @@ export default {
             this.isDobError = false;
 
             // null validation
-            if(!this.username || !this.email || !this.password || !this.confirmpwd || !this.dob || !this.fullname || !this.gender){
+            if(!this.username || !this.email || !this.password || !this.confirmpwd || !this.dob || !this.fullname || this.gender == ""){
                 this.hasError = true;
                 this.errorMessage = "Please fill up all the information\n";
                 return;

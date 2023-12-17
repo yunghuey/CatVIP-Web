@@ -18,7 +18,10 @@
                             <i class="bi bi-person-fill"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Edit profile</a></li>
+                            <li><router-link :to="{name: 'EditProfile'}" class="hyperlink"> 
+                                <a class="dropdown-item" href="#">Edit profile</a>
+                            </router-link>
+                            </li> 
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#"  v-on:click="logout">Logout</a></li>
                         </ul>
@@ -43,14 +46,14 @@
            <nav class="navbar">
                 <ul class="navbar-nav">
                     <li class="p-1 my-1 display">
-                        <router-link to="/seller" class="hyperlink"> 
+                        <router-link :to="{name:'Seller'}" class="hyperlink"> 
                             <a class="nav-link px-2" active>
                                 <span class="me-2"><i class="bi bi-speedometer"></i>&nbsp; <span>Dashboard</span></span>
                             </a>
                             </router-link>
                     </li>
                     <li class="p-1 my-1 display">
-                        <router-link to="/seller" class="hyperlink"> 
+                        <router-link :to="{name:'Seller'}" class="hyperlink"> 
                             <a class="nav-link px-2" >
                                 <span class="me-2"><i class="bi bi-boxes"></i>&nbsp; <span>Product </span></span>
                             </a>
