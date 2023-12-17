@@ -12,7 +12,11 @@
                         <p><img :src="getImageSource()" alt=""></p>
                         <p>Full name : <span v-text="fullname"></span></p>
                         <p>Description: <span v-text="form.description"></span></p>
-                        <p>Application Date: <span v-text="formatDate(form.dateTime)"></span></p>
+                        <div v-if="form.status == 'Pending'">
+                        </div>
+                        
+                        <p v-if="form.status == 'Pending'">Application Date: <span v-text="formatDate(form.dateTime)"></span></p>
+                        <p v-else>Approve Date: <span v-text="formatDate(form.dateTime)"></span></p>
                         Document: <a v-on:click="showPdf(form.documentation, username)" class="download" style="text-decoration: underline;">View Document</a>
                         <div v-if="form.status == 'Pending'">
                             <div class="row">
@@ -136,14 +140,16 @@ export default{
                     "rejectedReason": this.comment
                 };
 
-                // console.log(body);
-                const result = axios.put(
+                const result = await axios.put(
                     ApiConstant.UpdateExpertURL,
                     body,
                     {headers: header}
                 );
-                console.log("updated expert");
-                this.$router.go(-1);
+                if (result.status == 200){
+                    this.$router.push({name: 'Expert'});
+                }else{
+                    console.log(result);
+                }
             } catch(e){
                 this.hasData = false;
                 console.log(e.response.data);
@@ -235,6 +241,9 @@ div.row{
 .btn{
     color: var(--dark-color);
     background-color: var(--light-color);
+}
+.download{
+    font-weight: bold;
 }
 .download:hover{
     cursor: pointer;

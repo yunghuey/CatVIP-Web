@@ -45,7 +45,8 @@ const routes = [
     {
         name: 'ExpertPending',
         component: ExpertPending,
-        path: '/expert/pending'
+        path: '/expert/pending',
+        
     },
     {
         name: 'AllPost',

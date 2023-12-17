@@ -1,35 +1,25 @@
 <template>
-    <Navbar></Navbar>
-    <main class="mt-1 pt-3">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 fw-bold fs-3">Pending Application</div>
-            </div>
-            <!-- table pending-->
-            <div class="row px-3 py-1">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Full name</th>
-                            <th>Applied Date</th>
-                            <th>View More</th>
-                            <th hidden>Id</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(user, index) in pendings" :key="index">
-                            <td v-text="index+1"></td>
-                            <td v-text="allpendingname[index]"></td>
-                            <td v-text="formatDate(user.dateTime)"></td>
-                            <td><router-link :to="{name: 'ExpertForm', params: {id: user.id}}" class="hyperlink">View</router-link></td>
-                            <td v-text="user.id" hidden></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
+  <Navbar></Navbar>
+  <main class="mt-1 pt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 fw-bold fs-3">Pending Application</div>
+      </div>
+      <div class="row px-3 py-1">
+        <table id="viewpending" class="table table-striped">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Full name</th>
+              <th>Applied Date</th>
+              <th>View More</th>
+              <th hidden>Id</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script>
@@ -37,50 +27,80 @@ import Navbar from '@/components/admin/sidenav.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ApiConstant } from "../../../repository/APIConstant.js"
 import axios from 'axios';
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+import $ from 'jquery';
+DataTable.use(DataTablesCore);
 export default{
     name: 'ExpertPending',
+    components: {
+        Navbar,
+        DataTable,
+    },
     data(){
         return {
             token: "",
             allpendingname: [],
             pendings: [],
+            tableData: [],
+            columndata: [],
         }
     },
-    components: {
-        Navbar,
-    },
+    
     methods:{
+        initializeDataTable() {
+
+            let table = $("#viewpending").DataTable({
+                data: this.tableData,
+                destroy: true,
+                paging: true,
+                columns: this.columndata,
+            });
+
+            $('#viewpending tbody').on('click', 'a', (event) => {
+                let data = table.row($(event.target).closest('tr')).data();
+                console.log("event:", JSON.stringify(data));
+                this.$router.push({ name: 'ExpertForm', params: { id: data.id } });
+            });
+        },
         async getPendingFunc(){ 
-            var header = {
-                "Content-Type": "application/json",
-                "Authorization": "bearer " + this.token,
-            };
-            axios.get(
-                ApiConstant.GetPendingExpertURL, 
-                {headers: header}    
-            ).then(
-                res => {
-                    this.pendings = res.data;
-                    this.getNameFunc(this.pendings).then((result) => {
-                        this.allpendingname = result;
-                    });
-                }   
-            ).catch(
-                error => {
-                    if(error.response && error.response.status === 401){
-                        window.alert("401: Unable to load data");
-                    } else{
-                        console.log(error);
-                    }
+            try{
+                var header = {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer " + this.token,
+                };
+                const res = await axios.get( ApiConstant.GetPendingExpertURL, {headers: header});
+                this.pendings = res.data;
+                
+
+                await this.getNameFunc(this.pendings);
+                this.allpendingname = await this.getNameFunc(this.pendings);
+                this.tableData = this.createData();
+                this.columndata = [
+                        { title: 'No', data: 'index' },
+                        { title: 'Full Name', data: 'name' },
+                        { title: 'Applied Date', data: 'date' },
+                        { title: 'View More', data: 'button' },
+                        { title: 'Id', visible: false, data: 'id' },
+                    ];
+                    this.$nextTick(() => {
+                        this.initializeDataTable(); 
+                    });     
+            } catch(error){
+                if (error.response && error.response.status === 401) {
+                    window.alert("401: Unable to load data");
+                } else {
+                    console.log(error);
                 }
-            );
+            }
         },
         async getNameFunc(infoarr){
             var namelist = [];
             for(let i = 0 ; i < infoarr.length; i++){
                 namelist[i] = await this.getNameById(infoarr[i].catOnwerId);
             }   
-            console.log("namelist : " + namelist);
+            console.log("namelist pending : " + namelist);
+            
             return namelist;
         },
         formatDate(dateString){
@@ -116,6 +136,17 @@ export default{
                 }
             );
                 return name;
+        },
+        createData(){
+            return this.pendings.map((pending, index) => {
+                return {
+                    index: index + 1,
+                    name: this.allpendingname[index],
+                    date: this.formatDate(pending.dateTime),
+                    id: pending.id,
+                    button: "<a class='link'>View</a>"
+                };
+            });
         }
     },
     async mounted(){
@@ -127,22 +158,36 @@ export default{
             localStorage.removeItem('isSeller');
            this.$router.push({name: 'Login'});
         }
+
+        let dataTable = $("#viewpending").DataTable();
+
+        if ($.fn.DataTable.isDataTable("#viewpending")) {
+            dataTable.clear().destroy();
+            $("#viewpending thead").html('');
+            $("#viewpending tbody").html('');
+            $("#viewpending").empty();
+            console.log('clear table');
+        }
         await this.getPendingFunc();
     },
-
 }
 </script>
 
 <style scoped>
-main{
-    margin-left: 10px;
-    padding-left: 10px;
+@import "bootstrap";
+@import "datatables.net-bs5";
+
+.link {
+  cursor: pointer;
 }
-@media (min-width: 992px){
-    
-    main{
-        margin-left: 250px;
-    }
-  
+main {
+  margin-left: 10px;
+  padding-left: 10px;
+}
+@media (min-width: 992px) {
+  main {
+    margin-left: 250px;
+  }
 }
 </style>
+

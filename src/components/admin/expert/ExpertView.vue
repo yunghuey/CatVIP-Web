@@ -8,50 +8,22 @@
             <div class="row">
                 <div class="col-md-12 fw-bold fs-3">Expert Application</div>
             </div>
-            <div class="row">
-                <div class="col-md-12 fs-4">Pending Application</div>
-            </div>
-            <!-- table pending-->
-            <div class="row px-3 py-1">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Full name</th>
-                            <th>Applied Date</th>
-                            <th>View More</th>
-                            <th hidden>Id</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(user, index) in pendings" :key="index">
-                            <td v-text="index+1"></td>
-                            <td v-text="allpendingname[index]"></td>
-                            <td v-text="formatDate(user.dateTime)"></td>
-                            <td><router-link :to="{name: 'ExpertForm', params: {id: user.id}}" class="hyperlink">View</router-link></td>
-                            <td v-text="user.id" hidden></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            
             <!-- table all -->
-            <div class="row">
-                <div class="col-md-12 fw-bold fs-3">Expert List</div>
-            </div>
             <div class="row px-3 py-1">
-                <table class="table table-striped">
+                <table class="table table-striped" id="viewall">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Full name</th>
+                            <th>Full Name</th>
                             <th>Status</th>
-                            <th>Date Time</th>
+                            <th>Updated Date</th>
                             <th>Remark</th>
                             <th>View More</th>
                             <th hidden>Id</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <tr v-for="(exp, index) in allexperts" :key="index">
                             <td v-text="index+1"></td>
                             <td v-text="allexpertname[index]"></td>
@@ -60,7 +32,7 @@
                             <td v-text="exp.rejectedReason"></td>
                             <td><router-link :to="{name: 'ExpertForm', params: {id: exp.id}}" class="hyperlink">View</router-link></td>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
 
@@ -75,46 +47,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ApiConstant } from "../../../repository/APIConstant.js"
 import axios from 'axios';
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+import $ from 'jquery';
+DataTable.use(DataTablesCore);
+
 export default{
     name:'ExpertView',
     data(){
         return {
             token: "",
-            pendings: [],
             allexperts: [],
-            allpendingname: [],
             allexpertname: [],
+            tableData: [],
+            columndata: [],
+            isRun : false,
         }
     },
     components:{
         Navbar,
     },
     methods:{
-        async getPendingFunc(){ 
-            var header = {
-                "Content-Type": "application/json",
-                "Authorization": "bearer " + this.token,
-            };
-            axios.get(
-                ApiConstant.GetPendingExpertURL, 
-                {headers: header}    
-            ).then(
-                res => {
-                    this.pendings = res.data;
-                    this.getNameFunc(this.pendings).then((result) => {
-                        this.allpendingname = result;
-                    });
-                }   
-            ).catch(
-                error => {
-                    if(error.response && error.response.status === 401){
-                        window.alert("401: Unable to load data");
-                    } else{
-                        console.log(error);
-                    }
-                }
-            );
-        },
         async getNameFunc(infoarr){
             var namelist = [];
             for(let i = 0 ; i < infoarr.length; i++){
@@ -128,16 +81,60 @@ export default{
                 "Content-Type": "application/json",
                 "Authorization": "bearer " + this.token,
             };
-            axios.get(
+            await axios.get(
                 ApiConstant.GetAllApplicationURL, 
                 {headers: header}    
             ).then(
                 res => {
+                    console.log('run again1');
+
+                    if (this.isRun == false){
+                        // res = this.getAllFunc();
+                        // this.reloadPage();
+
+                        this.isRun = true;
+                    }
                     this.allexperts = res.data;
+                    
+                    console.log(this.allexperts.length);
                     this.getNameFunc(this.allexperts).then(
                         (result) => {
                             this.allexpertname = result;
-                    });   
+                            // build datatable
+                            this.tableData = this.createData();
+                            this.columndata = [
+                                { title: 'No', data: 'index' },
+                                { title: 'Full Name', data: 'name' },
+                                { title: 'Status', data: 'status' },
+                                { title: 'Updated Date', data: 'date' },
+                                { title: 'Remark', data: 'remark' },
+                                { title: 'View More', data: 'button' },
+                                { title: 'Id', visible: false, data: 'id' },
+                            ];
+
+                            this.$nextTick(() => {
+
+                                if ($.fn.DataTable.isDataTable("#viewall")) {
+                                    $("#viewall").DataTable().clear().draw();
+                                    $("#viewall").DataTable().destroy();
+                                    $("#viewall thead").html('');
+                                }
+
+                                let table = $("#viewall").DataTable({
+                                    data: this.tableData,
+                                    destroy: true,
+                                    paging: true,
+                                    columns: this.columndata,
+                                });
+                                $('#viewpending tbody').on('click', 'a', (event) => {
+                                    let data = table.row($(event.target).closest('tr')).data();
+                                    console.log("event:", JSON.stringify(data));
+                                    this.$router.push({ name: 'ExpertForm', params: { id: data.id } });
+                                });  
+                            }); 
+
+
+                        });   
                 }
                 
             ).catch(
@@ -182,6 +179,22 @@ export default{
                 }
             );
                 return name;
+        },
+        createData(){
+            return this.allexperts.map((exp, index) => {
+                return {
+                    index: index + 1,
+                    name: this.allexpertname[index],
+                    status: exp.status,
+                    date: this.formatDate(exp.dateTime),
+                    remark: exp.rejectedReason,
+                    id: exp.id,
+                    button: "<a class='link'>View</a>"
+                };
+            });
+        },
+        reloadPage() {
+            window.location.reload();
         }
     },
     async mounted(){
@@ -193,7 +206,6 @@ export default{
             localStorage.removeItem('isSeller');
            this.$router.push({name: 'Login'});
         }
-        await this.getPendingFunc();
         await this.getAllFunc();
     },
 }
@@ -201,6 +213,8 @@ export default{
 </script>
 
 <style scoped>
+@import 'bootstrap';
+@import 'datatables.net-bs5';
 main{
     margin-left: 10px;
     padding-left: 10px;
