@@ -20,4 +20,8 @@ export const ApiConstant = {
   // User
   GetUserByIdURL: `${apiUrl}user/GetUserInfoById/`,
 
+  // Analysis
+  GetUsersCountURL: `${apiUrl}Analysis/GetUsersCount`,
+  GetExpertTipsCountURL: `${apiUrl}Analysis/GetExpertTipsCount`,
+  GetCatCountURL: `${apiUrl}Analysis/GetMissingCatsCount`,
 };
