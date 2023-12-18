@@ -7,7 +7,8 @@ import EditProfile from "./components/authentication/EditProfile.vue";
 import ExpertView from "./components/admin/expert/ExpertView.vue";
 import ExpertForm from  "./components/admin/expert/ExpertForm.vue";
 import ExpertPending from  "./components/admin/expert/ExpertPending.vue";
-import AllPost from "./components/admin/post/AllPost.vue";
+import ReportedPosts from "./components/admin/post/ReportedPosts.vue";
+import ReviewPost from "./components/admin/post/ReviewPost.vue";
 import SellerHome from "./components/seller/sellerhome.vue";
 import {createRouter, createWebHashHistory} from 'vue-router';
 
@@ -49,9 +50,9 @@ const routes = [
         
     },
     {
-        name: 'AllPost',
-        component: AllPost,
-        path: '/post/allpost'
+        name: 'ReportedPosts',
+        component: ReportedPosts,
+        path: '/post/reportedposts'
     },
     {
         name: 'Seller',
@@ -62,6 +63,12 @@ const routes = [
         name: 'EditProfile',
         component: EditProfile,
         path: '/editprofile'
+    },
+    {
+        name: 'ReviewPost',
+        component: ReviewPost,
+        path: '/post/reviewpost/:id',
+        props: true
     },
 ];
 

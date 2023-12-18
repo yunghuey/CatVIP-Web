@@ -86,7 +86,7 @@
 
 
                     <li class="p-1 my-1 display">
-                        <router-link :to="{name: 'AllPost'}" class="hyperlink">
+                        <router-link :to="{name: 'ReportedPosts'}" class="hyperlink">
                         <a class="nav-link px-2" active>
                             <span class="me-2"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; <span>Post reporting </span></span>
                         </a>
