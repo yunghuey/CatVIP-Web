@@ -42,8 +42,6 @@ export default{
         let user = localStorage.getItem('token');
         this.token = user.substring(1, user.length-1);
         await this.getExpertTipGraph('today');
-   
-
     },
     methods:{
         async getExpertTipGraph(query){

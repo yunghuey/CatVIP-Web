@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-11 m-0 p-0 pe-3">
+    <div class="col-md-11 m-0 p-0 pe-2">
         <div class="card mb-4">
             <div class="card-body">
                 <div class="row button-grp">
@@ -41,38 +41,16 @@ export default{
         }
     },
     async mounted(){
+        console.log("reloaded");
         let user = localStorage.getItem('token');
         this.token = user.substring(1, user.length-1);
-        await this.getMissingCatGraph("lastWeek");
-        const ctx = document.getElementById('missing-cat');
-        let catChartData = {
-            type : 'line',
-            data: {
-                labels: this.catchartlabel,
-                datasets: [{
-                    label: "Number of missing cat",
-                    data: this.catchartdata,
-                    backgroundColor: "rgba(54, 73, 90, .5)",
-                    borderWidth: 3,
-                },],
-            },
-            options: {
-                responsive: true,
-                lineTension: 1,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            padding: 10,
-                        }
-                    }]
-                },
-            }
-        }
-        new Chart(ctx,catChartData);
+        await this.getMissingCatGraph('lastWeek');
     },
     methods:{
         async getMissingCatGraph(query){
+            if (query == ""){
+                query = 'lastWeek';
+            }
             if (query == 'lastWeek'){
                 this.catduration = 'Last 7 days';
             } else if (query == 'last28Days'){
@@ -90,15 +68,54 @@ export default{
                     url, {headers: header}
                 );
                 if (result.status == 200){
+                    console.log(result.data);
                     this.catchartlabel = Object.keys(result.data);
                     this.catchartdata = Object.values(result.data);
+                    const ctx = document.getElementById('missing-cat');
+                    let catChartData = {
+                        type : 'line',
+                        data: {
+                            labels: this.catchartlabel,
+                            datasets: [{
+                                label: "Number of missing cat",
+                                data: this.catchartdata,
+                                backgroundColor: "rgba(54, 73, 90, .5)",
+                                borderWidth: 3,
+                            },],
+                        },
+                        options: {
+                            responsive: true,
+                            lineTension: 1,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        padding: 10,
+                                        stepSize: 2,
+                                    }
+                                }]
+                            },
+                        }
+                    }
+                    new Chart(ctx,catChartData);
                     return;
                 }
                 alert(result.data);
             } catch (e){
-                alert("Error in getting missing cat data...Please try again later");
-                console.log(e);
+                // alert(e);
+                // alert("Error in getting missing cat data...Please try again later");
+                // console.log(e);
             }
+        }
+    },
+    async created() {
+        const reloaded = localStorage.getItem('reloadcat');
+        if (reloaded == null || reloaded !== 'true') {
+            localStorage.setItem('reloadcat', 'true');
+
+        } else{
+            await this.getMissingCatGraph("lastWeek");
+            localStorage.setItem('reloadcat', 'false');
         }
     }
 }
