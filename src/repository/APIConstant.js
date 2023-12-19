@@ -23,6 +23,7 @@ export const ApiConstant = {
   // Reported post
   GetReportedPostsURL: `${apiUrl}post/getreportedposts`,
   GetReportedPostDetailsURL: `${apiUrl}post/getreportedpostdetails/`,
+  DeletePostURL: `${apiUrl}post/deletepost/`,
 
 
   // Analysis
@@ -33,4 +34,6 @@ export const ApiConstant = {
   // Product
   GetAllProductURL: `${apiUrl}Product/GetProducts`,
   DeleteProductURL: `${apiUrl}Product/Delete/`,
+  AddProductURL: `${apiUrl}Product/Store`,
+  GetProductTypesURL: `${apiUrl}Product/GetProductTypes`,
 };

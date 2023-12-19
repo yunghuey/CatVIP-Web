@@ -7,7 +7,7 @@
             </div>
             <div class="row ">
                 <div class="float-end">
-                    <button class="btn">Add Product</button>
+                    <button class="btn" v-on:click="addProduct">Add Product</button>
                 </div>
             </div>
 
@@ -77,12 +77,13 @@ export default{
     },
     async mounted(){
         let user = localStorage.getItem('token');
+        console.log("heloo", user)
         let seller = localStorage.getItem('isSeller');
         this.token = user.substring(1, user.length -1);
         if (!user || seller == "no"){
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
-           this.$rouer.push({name: 'Login'});
+           this.$router.push({name: 'Login'});
         }
         await this.getAllProducts();
     },
@@ -168,6 +169,11 @@ export default{
                 // delete success
                 location.reload();
             }
+        },
+        addProduct(){
+            console.log("test");
+            console.log("kau kt mne ni")
+            this.$router.push({ name: 'AddProduct' });
         }
     },
     created() {

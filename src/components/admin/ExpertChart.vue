@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import Chart from 'chart.js'
+//import Chart from 'chart.js'
 import { ApiConstant } from '../../repository/APIConstant';
 import axios from 'axios';
 

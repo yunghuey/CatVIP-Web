@@ -5,13 +5,14 @@ import SignUp from "./components/authentication/SignUp.vue";
 import ForgotPassword from "./components/authentication/ForgotPassword.vue";
 import EditProfile from "./components/authentication/EditProfile.vue";
 import ExpertView from "./components/admin/expert/ExpertView.vue";
-import ExpertForm from  "./components/admin/expert/ExpertForm.vue";
-import ExpertPending from  "./components/admin/expert/ExpertPending.vue";
+import ExpertForm from "./components/admin/expert/ExpertForm.vue";
+import ExpertPending from "./components/admin/expert/ExpertPending.vue";
 import ReportedPosts from "./components/admin/post/ReportedPosts.vue";
 import ReviewPost from "./components/admin/post/ReviewPost.vue";
 import SellerHome from "./components/seller/sellerhome.vue";
 import ProductList from "./components/seller/ProductList.vue";
-import {createRouter, createWebHashHistory} from 'vue-router';
+import AddProduct from "./components/seller/AddProduct.vue";
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
     {
@@ -70,16 +71,21 @@ const routes = [
         component: ReviewPost,
         path: '/post/reviewpost/:id',
         props: true
-      },
-      {
+    },
+    {
         name: 'ProductList',
         component: ProductList,
         path: '/seller/products'
     },
+    {
+        name: 'AddProduct',
+        component: AddProduct,
+        path: '/seller/addProduct'
+    },
 ];
 
 const router = createRouter({
-    history:createWebHashHistory(),
+    history: createWebHashHistory(),
     routes
 });
 

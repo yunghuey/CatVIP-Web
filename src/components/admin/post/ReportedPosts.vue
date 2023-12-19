@@ -1,14 +1,13 @@
 <template>
-
     <Navbar></Navbar>
 
-       <!-- content -->
-       <main class="mt-1 pt-3">
+    <!-- content -->
+    <main class="mt-1 pt-3">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 fw-bold fs-3">Reported Posts</div>
             </div>
-            
+
             <!-- table all -->
             <div class="row px-3 py-1">
                 <table class="table table-striped" id="viewall">
@@ -19,7 +18,7 @@
                             <th>Reported Date</th>
                             <th>View More</th>
                             <th hidden>Id</th>
-                            <th>Image</th>
+
                         </tr>
                     </thead>
                     <!-- <tbody>
@@ -37,7 +36,6 @@
 
         </div>
     </main>
-
 </template>
 
 <script>
@@ -49,55 +47,65 @@ import axios from 'axios';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
 import $ from 'jquery';
-export default{
+export default {
     name: 'ReportedPosts',
     components: {
         Navbar,
     },
-    async mounted(){
+    async mounted() {
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
-        if (!user || seller == true){
+        if (!user || seller == true) {
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
-            this.$router.push({name:'Login'});
+            this.$router.push({ name: 'Login' });
         }
         this.id = this.$route.params.id;
         await this.getReportedPosts();
     },
-    data(){
-      return{
-        token: "",
-        posts: []
-
-      }  
+    created() {
+        const reloaded = localStorage.getItem('reloadedpending');
+        if (reloaded == null || reloaded !== 'true') {
+            localStorage.setItem('reloadedpending', 'true');
+            location.reload();
+        } else {
+            localStorage.setItem('reloadedpending', 'false');
+        }
     },
-    methods:{
-        async getReportedPosts(){ 
+
+    data() {
+        return {
+            token: "",
+            posts: []
+
+        }
+    },
+    methods: {
+        async getReportedPosts() {
             console.log("hai")
             // note: waiting update, havent fully tested
             let token = localStorage.getItem('token');
-            token = token.substring(1, token.length -1);
+            token = token.substring(1, token.length - 1);
             var header = {
                 "Content-Type": "application/json",
                 "Authorization": "bearer " + token,
             };
-             console.log(token);
+            console.log(token);
             axios.get(
-                ApiConstant.GetReportedPostsURL, 
-                {headers: header}    
+                ApiConstant.GetReportedPostsURL,
+                { headers: header }
             ).then(
                 res => {
                     this.posts = res.data;
                     console.log(this.posts);
                     this.tableData = this.createData();
                     this.columndata = [
-                                { title: 'No', data: 'index' },
-                                { title: 'Full Name', data: 'name' },
-                                { title: 'Reported Date', data: 'date' },
-                                { title: 'View More', data: 'button' },
-                                { title: 'Id', visible: false, data: 'id' },
-                                { title: 'Images', data: 'images', render: this.renderImages }
+                        { title: 'No', data: 'index' },
+                        { title: 'Full Name', data: 'name' },
+                        { title: 'Reported Date', data: 'date' },
+                        { title: 'View More', data: 'button' },
+                        { title: 'Id', visible: false, data: 'id' },
+                        { title: 'Images', visible: false, data: 'images', render: this.renderImages }
                     ]
                     this.$nextTick(() => {
 
@@ -117,21 +125,22 @@ export default{
                             let data = table.row($(event.target).closest('tr')).data();
                             console.log("event:", JSON.stringify(data));
                             this.$router.push({
-                                 name: 'ReviewPost',
-                                  params: { id: data.id },
-                                  query: { postImages: JSON.stringify(data.images) } });
-                        });  
-                        }); 
+                                name: 'ReviewPost',
+                                params: { id: data.id },
+                                query: { postImages: JSON.stringify(data.images) }
+                            });
+                        });
+                    });
                 }
             ).catch(
                 error => {
-                    if(error.response && error.response.status === 401){
+                    if (error.response && error.response.status === 401) {
                         window.alert("401: Unable to load data");
                     }
                 }
             );
         },
-        createData(){
+        createData() {
             return this.posts.map((post, index) => {
                 return {
                     index: index + 1,
@@ -146,15 +155,15 @@ export default{
         renderImages(data, type, row) {
             console.log("image rendering");
             if (type === 'display') {
-            const imageHTML = row.images.map(image => `<img src="${image}" alt="Image" style="max-width: 50px; max-height: 50px;">`).join(' ');
-            return `<div>${imageHTML}</div>`;
+                const imageHTML = row.images.map(image => `<img src="${image}" alt="Image" style="max-width: 50px; max-height: 50px;">`).join(' ');
+                return `<div>${imageHTML}</div>`;
             }
             return data;
         },
         reloadPage() {
             window.location.reload();
         },
-        formatDate(dateString){
+        formatDate(dateString) {
             let date = new Date(dateString);
             let year = date.getFullYear();
             let month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -168,15 +177,16 @@ export default{
 </script>
 
 <style scoped>
-main{
+main {
     margin-left: 10px;
     padding-left: 10px;
 }
-@media (min-width: 992px){
-    
-    main{
+
+@media (min-width: 992px) {
+
+    main {
         margin-left: 250px;
     }
-  
+
 }
 </style>
