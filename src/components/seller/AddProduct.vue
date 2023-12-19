@@ -9,7 +9,9 @@
             <div v-if="hasData == true">
                 <div class="card my-3 ps-3">
                     <div class="card-body">
-                        <p><img :src="getImageSource()" alt=""></p>                        <p>Product name : <span v-text="name"></span></p>
+                        <p><img :src="getImageSource()" alt=""></p>                        
+                        <p>Product name : <span v-text="name"></span></p>
+                        <p>Product name : <span v-text="name"></span></p>
                         <p>Description: <span v-text="description"></span></p>
                         <p>Price: <span v-text="price"></span></p>
                         <p>URL: <span v-text="url"></span></p>
