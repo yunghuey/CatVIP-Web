@@ -61,7 +61,6 @@ export default{
             allexpertname: [],
             tableData: [],
             columndata: [],
-            isRun : false,
         }
     },
     components:{
@@ -86,14 +85,6 @@ export default{
                 {headers: header}    
             ).then(
                 res => {
-                    console.log('run again1');
-
-                    if (this.isRun == false){
-                        // res = this.getAllFunc();
-                        // this.reloadPage();
-
-                        this.isRun = true;
-                    }
                     this.allexperts = res.data;
                     
                     console.log(this.allexperts.length);
@@ -126,7 +117,7 @@ export default{
                                     paging: true,
                                     columns: this.columndata,
                                 });
-                                $('#viewpending tbody').on('click', 'a', (event) => {
+                                $('#viewall tbody').on('click', 'a', (event) => {
                                     let data = table.row($(event.target).closest('tr')).data();
                                     console.log("event:", JSON.stringify(data));
                                     this.$router.push({ name: 'ExpertForm', params: { id: data.id } });
@@ -136,7 +127,6 @@ export default{
 
                         });   
                 }
-                
             ).catch(
                 error => {
                     if(error.response && error.response.status === 401){

@@ -9,6 +9,7 @@ import ExpertForm from  "./components/admin/expert/ExpertForm.vue";
 import ExpertPending from  "./components/admin/expert/ExpertPending.vue";
 import AllPost from "./components/admin/post/AllPost.vue";
 import SellerHome from "./components/seller/sellerhome.vue";
+import ProductList from "./components/seller/ProductList.vue";
 import {createRouter, createWebHashHistory} from 'vue-router';
 
 const routes = [
@@ -62,6 +63,11 @@ const routes = [
         name: 'EditProfile',
         component: EditProfile,
         path: '/editprofile'
+    },
+    {
+        name: 'ProductList',
+        component: ProductList,
+        path: '/seller/products'
     },
 ];
 

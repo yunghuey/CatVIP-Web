@@ -24,4 +24,8 @@ export const ApiConstant = {
   GetUsersCountURL: `${apiUrl}Analysis/GetUsersCount`,
   GetExpertTipsCountURL: `${apiUrl}Analysis/GetExpertTipsCount?query=`,
   GetCatCountURL: `${apiUrl}Analysis/GetMissingCatsCount?query=`,
+
+  // Product
+  GetAllProductURL: `${apiUrl}Product/GetProducts`,
+  DeleteProductURL: `${apiUrl}Product/Delete/`,
 };
