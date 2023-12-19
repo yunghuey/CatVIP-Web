@@ -90,6 +90,11 @@ export default {
     --offcanvas-width: 270px;
     --topNavbarHeight: 46px;
 }
+nav{
+    position: sticky;
+    top:0;
+    z-index: 2;
+}
 .p-1.my-1.display{
     font-size: 20px;
 }

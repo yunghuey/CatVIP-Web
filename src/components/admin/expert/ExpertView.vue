@@ -193,9 +193,6 @@ export default{
                 };
             });
         },
-        reloadPage() {
-            window.location.reload();
-        }
     },
     async mounted(){
         let user = localStorage.getItem('token');

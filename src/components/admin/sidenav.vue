@@ -133,6 +133,11 @@ export default {
 .p-1.my-1.display{
     font-size: 20px;
 }
+nav{
+    position: sticky;
+    top:0;
+    z-index: 2;
+}
 .p-1.my-1.display:hover{
     color:darkslategray;
 }
