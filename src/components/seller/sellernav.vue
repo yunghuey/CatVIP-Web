@@ -23,7 +23,7 @@
                             </router-link>
                             </li> 
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"  v-on:click="logout">Logout</a></li>
+                            <li><a class="dropdown-item"  v-on:click="logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -45,13 +45,13 @@
         <div class="offcanvas-body p-0">
            <nav class="navbar">
                 <ul class="navbar-nav">
-                    <li class="p-1 my-1 display">
+                    <!-- <li class="p-1 my-1 display">
                         <router-link :to="{name:'Seller'}" class="hyperlink"> 
                             <a class="nav-link px-2" active>
                                 <span class="me-2"><i class="bi bi-speedometer"></i>&nbsp; <span>Dashboard</span></span>
                             </a>
                             </router-link>
-                    </li>
+                    </li> -->
                     <li class="p-1 my-1 display">
                         <router-link :to="{name:'ProductList'}" class="hyperlink"> 
                             <a class="nav-link px-2" >
@@ -75,10 +75,13 @@ export default {
     name: 'Navbar',
     methods: {
         logout(){
-            localStorage.removeItem('token');
+            console.log('logout clicked seller');
+            
             this.$router.push({name: 'Login'});
+            localStorage.removeItem('reloadproduct');
+            localStorage.removeItem('token');
+            localStorage.removeItem('isSeller');
         }
-
     },
 }
 </script>

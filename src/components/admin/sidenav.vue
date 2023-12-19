@@ -113,10 +113,11 @@ export default {
         }
     },
     methods: {
-        logout(){
+        logout(){            
+            this.$router.push({name: 'Login'});
+            localStorage.removeItem('reloadcat');
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
-            this.$router.push({name: 'Login'});
         }
 
     },
