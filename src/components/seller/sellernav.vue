@@ -53,7 +53,7 @@
                             </router-link>
                     </li>
                     <li class="p-1 my-1 display">
-                        <router-link :to="{name:'Seller'}" class="hyperlink"> 
+                        <router-link :to="{name:'ProductList'}" class="hyperlink"> 
                             <a class="nav-link px-2" >
                                 <span class="me-2"><i class="bi bi-boxes"></i>&nbsp; <span>Product </span></span>
                             </a>
@@ -89,6 +89,11 @@ export default {
 :root{
     --offcanvas-width: 270px;
     --topNavbarHeight: 46px;
+}
+nav{
+    position: sticky;
+    top:0;
+    z-index: 2;
 }
 .p-1.my-1.display{
     font-size: 20px;

@@ -10,6 +10,7 @@ import ExpertPending from  "./components/admin/expert/ExpertPending.vue";
 import ReportedPosts from "./components/admin/post/ReportedPosts.vue";
 import ReviewPost from "./components/admin/post/ReviewPost.vue";
 import SellerHome from "./components/seller/sellerhome.vue";
+import ProductList from "./components/seller/ProductList.vue";
 import {createRouter, createWebHashHistory} from 'vue-router';
 
 const routes = [
@@ -47,7 +48,7 @@ const routes = [
         name: 'ExpertPending',
         component: ExpertPending,
         path: '/expert/pending',
-        
+
     },
     {
         name: 'ReportedPosts',
@@ -69,6 +70,11 @@ const routes = [
         component: ReviewPost,
         path: '/post/reviewpost/:id',
         props: true
+      },
+      {
+        name: 'ProductList',
+        component: ProductList,
+        path: '/seller/products'
     },
 ];
 
