@@ -9,9 +9,9 @@
                     </div>
                     <div class="col-sm-7 d-none d-md-block">
                         <div class="btn-group float-end me-3" role="group" aria-label="Basic outlined example">
-                            <button class="btn btn-outline-secondary" type="button" v-on:click="getMissingCatGraph('lastWeek')">Week</button>
-                            <button class="btn btn-outline-secondary" type="button" v-on:click="getMissingCatGraph('last28Days')">Month</button>
-                            <button class="btn btn-outline-secondary" type="button" v-on:click="getMissingCatGraph('last12Months')">Year</button>
+                            <button class="btn btn-outline-secondary" type="button" v-on:click="getMissingCatGraph('lastWeek')">7 Days</button>
+                            <button class="btn btn-outline-secondary" type="button" v-on:click="getMissingCatGraph('last28Days')">Week </button>
+                            <button class="btn btn-outline-secondary" type="button" v-on:click="getMissingCatGraph('last12Months')">Month</button>
                         </div>
                     </div>
                 </div>

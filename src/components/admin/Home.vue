@@ -10,28 +10,46 @@
             </div>
             <!-- display figure for total app user -->
             <div class="row">
-                <div class="card mb-3 me-4" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <span class="text-title">Cat owners</span><br/>
-                            <span class="text-figure" v-text="totalOwnerCount"></span>
+                <div class="card mb-3 me-4 col-5" >
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="text-title">Cat owners</span><br/>
+                                <span class="text-figure" v-text="totalOwnerCount"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="text-title">Registered user</span><br/>
+                                <span class="text-figure" v-text="totalOwnerCount"></span>
+                            </div>   
+                        </div>   
                     </div>
                 </div>
-                <div class="card mb-3 me-4" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <span class="text-title">Our Experts</span><br/>
-                            <span class="text-figure" v-text="totalExpertCount"></span>
+                <div class="card mb-3 me-4 col-5" >
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="text-title">Total Expert Tips</span><br/>
+                                <span class="text-figure" v-text="totalExpertCount"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="text-title">Total Daily Posting</span><br/>
+                                <span class="text-figure" v-text="totalExpertCount"></span>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
-
+            
+            <div class="row">
+                <ExpertChart></ExpertChart>
+            </div>
+            
             <!-- line chart for missing cat case -->
             <div class="row">
                 <CatChart></CatChart>
             </div>
-            <!-- line chart for expert tips post -->
-            <div class="row">
-                <ExpertChart></ExpertChart>
-            </div>
+
         </div>
     </main>
 

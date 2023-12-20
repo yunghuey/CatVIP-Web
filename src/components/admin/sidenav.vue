@@ -5,7 +5,10 @@
                     <span class="navbar-toggler-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"></span>
             </button>
 
-            <a class="navbar-brand fw-bold me-auto" href="#">CatViP</a>
+            <a class="navbar-brand fw-bold me-auto" href="#">
+                <img src="../../assets/logo.png" alt="" width="40px">
+                CatViP
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -64,16 +67,16 @@
                         <div class="collapse" id="collapseExample">
                             <ul class="navbar-nav ps-3">
                                 <li>
-                                    <router-link :to="{name: 'Expert'}" class="hyperlink"> 
+                                    <router-link :to="{name: 'ExpertPending'}" class="hyperlink"> 
                                     <a class="nav-link px-2" active>
-                                        <span class="me-2"><i class="bi bi-mortarboard-fill"></i>&nbsp; <span>All application </span></span>
+                                        <span class="me-2"><i class="bi bi-alarm"></i>&nbsp; <span>Pending Application </span></span>
                                     </a>
                                     </router-link>  
                                 </li>
                                 <li>
-                                    <router-link :to="{name: 'ExpertPending'}" class="hyperlink"> 
+                                    <router-link :to="{name: 'Expert'}" class="hyperlink"> 
                                     <a class="nav-link px-2" active>
-                                        <span class="me-2"><i class="bi bi-alarm"></i>&nbsp; <span>Pending application </span></span>
+                                        <span class="me-2"><i class="bi bi-mortarboard-fill"></i>&nbsp; <span>Application History </span></span>
                                     </a>
                                     </router-link>  
                                 </li>
@@ -132,7 +135,7 @@ export default {
     --topNavbarHeight: 46px;
 }
 .p-1.my-1.display{
-    font-size: 20px;
+    font-size: 18px;
 }
 nav{
     position: sticky;
@@ -143,6 +146,7 @@ nav{
     color:darkslategray;
 }
 .offcanvas.offcanvas-start.sidebar-nav{
+
     width: var(--offcanvas-width);
 }
 .hyperlink{
@@ -172,7 +176,7 @@ nav{
     .offcanvas.offcanvas-start.sidebar-nav{
         transform: none;
         visibility: visible !important;
-        top: 56px;
+        top: 68px;
         height: calc(100% - var(--topNavbarHeight));
     }
 }
