@@ -4,17 +4,12 @@
     <main class="mt-1 pt-3">
         <div class="container-fluid pe-5">
             <div class="row">
-                <div class="col-md-12 fw-bold fs-3">Add Product</div>
+                <div class="col-md-12 fw-bold fs-3">Edit Product</div>
             </div>
             <div v-if="hasData == true">
                 <div class="card my-3 ps-3">
-<<<<<<< Updated upstream
-                    <div class="card-body">
-                        <!-- <p><img :src="getImageSource()" alt=""></p> -->
-=======
                     <!--  <div class="card-body">
                         <p><img :src="getImageSource()" alt=""></p>
->>>>>>> Stashed changes
                         <p>Product name : <span v-text="name"></span></p>
                         <p>Description: <span v-text="description"></span></p>
                         <p>Price: <span v-text="price"></span></p>
@@ -59,7 +54,7 @@
                     </div>
                     <div class="row justify-content-center mt-3">
                         <div class="col-4 text-center">
-                            <input type="submit" class="btn mb-3" v-on:click="addProduct()">
+                            <input type="submit" class="btn mb-3" v-on:click="editProduct()">
                         </div>
                     </div>
                 </div>
@@ -77,7 +72,7 @@ import axios from 'axios';
 import defaultProfileImage from '@/assets/profileimage.png';
 
 export default {
-    name: 'AddProduct',
+    name: 'EditProduct',
     components: {
         Navbar,
     },
@@ -92,7 +87,14 @@ export default {
             this.$rouer.push({ name: 'Login' });
         }
 
-        await this.getProductTypes();
+        //await this.getProduct();
+        this.id = this.$route.params.id;
+        console.log(this.id)
+
+       // Fetch product data and assign it to this.product
+       await this.getProductTypes();
+       await this.getProduct();
+        
 
     },
     data() {
@@ -111,7 +113,7 @@ export default {
             image: "",
 
             // get product types
-            productTypes: [],
+            product: [],
             selectedProductType: null,
             selectedImage: null,
         }
@@ -140,46 +142,6 @@ export default {
                 console.log('Invalid file type. Please select an image.');
             }
         },
-        async addProduct() {
-            if (this.image == "" && this.name == "") {
-                alert("Please insert an image");
-                return;
-            }
-            try {
-                console.log("add")
-                console.log(this.image);
-                
-                var header = {
-                    "Content-Type": "application/json",
-                    "Authorization": "bearer " + this.token,
-                };
-                if (this.image != ""){
-                this.image = this.image.split(',')[1];
-            }
-                var body = {
-                    "name": this.name,
-                    "price": this.price,
-                    "description": this.description,
-                    "productTypeId": this.selectedProductType,
-                    "url": this.url,
-                    "image": this.image
-                };
-
-                const result = await axios.post(
-                    ApiConstant.AddProductURL,
-                    body,
-                    { headers: header }
-                );
-                if (result.status == 200) {
-                    this.$router.push({ name: 'ProductList' });
-                } else {
-                    console.log(result);
-                }
-            } catch (e) {
-                this.hasData = false;
-                console.log(e.response.data);
-            }
-        },
         async getProductTypes() {
             console.log("hai")
             console.log(this.token)
@@ -194,6 +156,78 @@ export default {
             ).then(
                 res => {
                     this.productTypes = res.data;
+                }
+            ).catch(
+                error => {
+                    if (error.response && error.response.status === 401) {
+                        window.alert("401: Unable to load data");
+                    }
+                }
+            );
+        },
+        async editProduct() {
+            if (this.image == "" && this.name == "") {
+                alert("Please insert an image");
+                return;
+            }
+            try {
+                console.log("update")
+                console.log(this.image);
+
+                var header = {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer " + this.token,
+                };
+                if (this.image != "") {
+                    this.image = this.image.split(',')[1];
+                }
+                var body = {
+                    "name": this.name,
+                    "price": this.price,
+                    "description": this.description,
+                    "productTypeId": this.selectedProductType,
+                    "url": this.url,
+                    "image": this.image
+                };
+
+                const result = await axios.put(
+                    ApiConstant.EditProductURL + this.id,
+                    body,
+                    { headers: header }
+                );
+                if (result.status == 200) {
+                    this.$router.push({ name: 'ProductList' });
+                } else {
+                    console.log(result);
+                }
+            } catch (e) {
+                this.hasData = false;
+                console.log(e.response.data);
+            }
+        },
+        async getProduct() {
+            console.log("hai")
+            console.log(this.token)
+            // note: waiting update, havent fully tested
+            var header = {
+                "Content-Type": "application/json",
+                "Authorization": "bearer " + this.token,
+            };
+            axios.get(
+                ApiConstant.GetProductURL + this.id,
+                { headers: header }
+            ).then(
+                res => {
+                    this.product = res.data;
+                    this.name = this.product.name;
+                    this.description = this.product.description;
+                    this.price = this.product.price;
+                    this.productTypeId = this.product.productTypeId;
+                    this.url = this.product.url;
+                    this.image = this.product.image;
+
+                    this.selectedProductType = this.productTypeId;
+
                 }
             ).catch(
                 error => {

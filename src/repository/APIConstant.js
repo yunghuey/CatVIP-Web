@@ -36,4 +36,6 @@ export const ApiConstant = {
   DeleteProductURL: `${apiUrl}Product/Delete/`,
   AddProductURL: `${apiUrl}Product/Store`,
   GetProductTypesURL: `${apiUrl}Product/GetProductTypes`,
+  EditProductURL: `${apiUrl}Product/Edit/`,
+  GetProductURL: `${apiUrl}Product/GetProduct/`,
 };

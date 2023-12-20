@@ -127,7 +127,7 @@ export default{
                         $('#viewall tbody').on('click', 'a.edit', (event) => {
                             let data = table.row($(event.target).closest('tr')).data();
                             console.log("Edit event:", JSON.stringify(data));
-                            // this.$router.push({ name: 'ExpertForm', params: { id: data.id } });
+                            this.$router.push({ name: 'EditProduct', params: { id: data.id } });
                         });
 
                         // For Delete
