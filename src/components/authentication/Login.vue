@@ -103,7 +103,7 @@ import axios from 'axios';
                         } else {
                             localStorage.setItem("isSeller", "yes");
                             console.log("going to seller");
-                            this.$router.push({ name: 'Seller'});
+                            this.$router.push({ name: 'ProductList'});
                         }
                     }
                 } catch (error) {
@@ -145,7 +145,7 @@ import axios from 'axios';
             if (user && seller == false){
                 this.$router.push({name:'Home'})
             } else if (user && seller == true){
-                this.$router.push({name:'Seller'});
+                this.$router.push({name:'ProductList'});
             }
         },
         

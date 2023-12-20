@@ -169,7 +169,7 @@ export default {
 
                     } else {
                         localStorage.setItem("isSeller", "yes");
-                        this.$router.push({ name: 'Seller'});
+                        this.$router.push({ name: 'ProductList'});
                     }
                 } else{
                     console.log(result.data);
