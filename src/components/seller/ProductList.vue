@@ -29,7 +29,7 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-alert">Delete</button>
+                        <button type="button" class="btn btn-alert" v-on:click="deleteProduct(productId)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -54,6 +54,8 @@
 import Navbar from '@/components/seller/sellernav.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import * as bootstrap from 'bootstrap';
+window.bootstrap = bootstrap;
 import { ApiConstant } from "../../repository/APIConstant.js"
 import axios from 'axios';
 import DataTable from 'datatables.net-vue3';
@@ -73,6 +75,7 @@ export default{
             tableData: [],
             columnData: [],
             isRun: false,
+            productId: 0,
         }
     },
     async mounted(){
@@ -134,10 +137,15 @@ export default{
                         $('#viewall tbody').on('click', 'a.delete', (event) => {
                             let data = table.row($(event.target).closest('tr')).data();
                             console.log("Delete event:", JSON.stringify(data));
-                            let rowid = data.id;
-                            // Perform your delete operation here
-                            // delete function
-
+                            this.productId = data.id;                            // delete function
+                            let modalElement = document.getElementById('deleteModal');
+                            if (modalElement){
+                                let modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
+                                 modalInstance.show();
+                            }
+                            else{
+                                console.error('Modal element not found');
+                            }
                         });
                     });
                 }
@@ -153,7 +161,7 @@ export default{
                     desc: prod.description,
                     url: prod.url,
                     buttonEdit:"<a class='edit'>Edit</a>",
-                    buttonDelete: "<a class='delete'  data-bs-toggle='modal'>Delete</a>",
+                    buttonDelete: "<a class='delete' data-bs-toggle='deleteModal'>Delete</a>",
                     id: prod.id,
                 }
             });
