@@ -20,8 +20,8 @@
 >>>>>>> e29c521 (add product)
                         <p>Description: <span v-text="description"></span></p>
                         <p>Price: <span v-text="price"></span></p>
-                        <p>URL: <span v-text="url"></span></p>
-                    </div> -->
+                        <p>URL: <span v-text="url"></span></p>-->
+                    </div> 
                     <div class="row">
                         <div class="image-container">
                             <img :src="getImageSource()" alt="" class="profile-image">
