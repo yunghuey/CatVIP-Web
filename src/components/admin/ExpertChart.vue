@@ -1,10 +1,10 @@
 <template>
-    <div class="col-md-11 m-0 p-0 pe-3">
+    <div class="col-md-11 m-0 p-0">
         <div class="card mb-4">
             <div class="card-body">
                 <div class="row button-grp">
                     <div class="col-sm-5">
-                        <h4 class="card-title mb-0">Expert Tips Posted</h4>
+                        <h4 class="card-title mb-0">Number of Posts</h4>
                         <div class="small text-medium-emphasis" v-text="expertduration"></div>
                     </div>
                     <div class="col-sm-7 d-none d-md-block">
@@ -17,7 +17,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <span v-text="expertchartdata" class="expert-figure"></span>
+                    <div class="col-md-5 col-sm-8">
+                        <span class="text-title"><b>Expert tips</b></span><br>
+                        <span v-text="expertdata" class="expert-figure"></span>
+                    </div>
+                    <div class="col-md-5 col-sm-8">
+                        <span class="text-title"><b>Daily Sharing</b></span><br>
+                        <span v-text="dailydata" class="expert-figure"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,7 +41,8 @@ export default{
         return{
             token: '',
             expertduration: 'Today',
-            expertchartdata: 0,
+            expertdata: 0,
+            dailydata: 0,
         }
     },
     async mounted(){
@@ -66,8 +74,8 @@ export default{
                 );
                 if (result.status == 200){
                     console.log(result.data);
-                    this.expertchartdata = result.data;
-                    // return;
+                    this.expertdata = result.data["Expert Tips"];
+                    this.dailydata = result.data["Posts"];
                 }
            } catch (e) {
                 alert("Error in getting expert tips data...Please try again later");
