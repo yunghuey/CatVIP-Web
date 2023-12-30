@@ -10,28 +10,18 @@
             </div>
             <!-- display figure for total app user -->
             <div class="row">
-                <div class="card mb-3 me-4" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <span class="text-title">Cat owners</span><br/>
-                            <span class="text-figure" v-text="totalOwnerCount"></span>
-                    </div>
-                </div>
-                <div class="card mb-3 me-4" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <span class="text-title">Our Experts</span><br/>
-                            <span class="text-figure" v-text="totalExpertCount"></span>
-                    </div>
-                </div>
+                <FigureChart></FigureChart>
             </div>
-
+            
+            <div class="row">
+                <ExpertChart></ExpertChart>
+            </div>
+            
             <!-- line chart for missing cat case -->
             <div class="row">
                 <CatChart></CatChart>
             </div>
-            <!-- line chart for expert tips post -->
-            <div class="row">
-                <ExpertChart></ExpertChart>
-            </div>
+
         </div>
     </main>
 
@@ -43,6 +33,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ApiConstant } from '../../repository/APIConstant';
 import CatChart from '@/components/admin/CatChart.vue';
 import ExpertChart from '@/components/admin/ExpertChart.vue';
+import FigureChart from '@/components/admin/FigureChart.vue';
 import axios from 'axios';
 export default{
     name: "Home",
@@ -50,6 +41,7 @@ export default{
         Navbar,
         CatChart,
         ExpertChart,
+        FigureChart,
     },
     data(){
         return {
@@ -68,29 +60,9 @@ export default{
             localStorage.removeItem('isSeller');
            this.$router.push({name: 'Login'});
         }
-        this.getUserCount(); 
     },
     methods:{
-        async getUserCount(){
-            try{
-                var header = {
-                    "Content-Type": "application/json",
-                    "Authorization": "bearer " + this.token,
-                };
-                const result = await axios.get(
-                    ApiConstant.GetUsersCountURL,
-                    {headers: header}
-                );
-                if (result.status == 200){
-                    console.log(result.data);
-                    this.totalExpertCount = result.data["Cat Expert"];
-                    this.totalOwnerCount = result.data["Cat Owner"];
-                    // assign here
-                }
-            }catch (e) {
-                alert("Error in getting data...Please try again later");
-            }
-        },
+       
     },
 }
 
@@ -100,10 +72,6 @@ export default{
 main{
     margin-left: 10px;
     padding-left: 10px;
-}
-main div.container-fluid  div.row span.text-figure{
-    font-size: 35px;
-    font-weight: bold;
 }
 
 @media (min-width: 992px){
