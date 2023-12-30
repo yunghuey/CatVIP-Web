@@ -25,10 +25,9 @@ export const ApiConstant = {
   GetReportedPostDetailsURL: `${apiUrl}post/getreportedpostdetails/`,
   DeletePostURL: `${apiUrl}post/deletepost/`,
 
-
   // Analysis
-  GetUsersCountURL: `${apiUrl}Analysis/GetUsersCount`,
-  GetExpertTipsCountURL: `${apiUrl}Analysis/GetExpertTipsCount?query=`,
+  GetUsersProductCountURL: `${apiUrl}Analysis/GetUsersAndProductsCount`,
+  GetExpertTipsCountURL: `${apiUrl}Analysis/GetPostsAndExpertTipsCount?query=`,
   GetCatCountURL: `${apiUrl}Analysis/GetMissingCatsCount?query=`,
 
   // Product
@@ -36,4 +35,6 @@ export const ApiConstant = {
   DeleteProductURL: `${apiUrl}Product/Delete/`,
   AddProductURL: `${apiUrl}Product/Store`,
   GetProductTypesURL: `${apiUrl}Product/GetProductTypes`,
+  EditProductURL: `${apiUrl}Product/Edit/`,
+  GetProductURL: `${apiUrl}Product/GetProduct/`,
 };
