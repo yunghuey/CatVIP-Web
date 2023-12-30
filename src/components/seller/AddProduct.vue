@@ -8,13 +8,6 @@
             </div>
             <div v-if="hasData == true">
                 <div class="card my-3 ps-3">
-                    <div class="card-body">
-                        <p><img :src="getImageSource()" alt=""></p>
-                        <p>Product name : <span v-text="name"></span></p>
-                        <p>Description: <span v-text="description"></span></p>
-                        <p>Price: <span v-text="price"></span></p>
-                        <p>URL: <span v-text="url"></span></p>-->
-                    </div> 
                     <div class="row">
                         <div class="image-container">
                             <img :src="getImageSource()" alt="" class="profile-image">
@@ -35,8 +28,8 @@
 
                     <div class="row px-3 py-1">
                         <label for="productPrice">Price:</label>
-                        <input type="number" id="productPrice" v-model="price" class="form-control" min="0">
-                    </div>
+                        <!-- <input type="number" id="productPrice" v-model="price" class="form-control" > -->
+                        <input type="text" id="productPrice" v-model="formattedPrice" @input="validateInput" class="form-control">                    </div>
 
                     <div class="row px-3 py-1">
                         <label for="productUrl">URL:</label>
@@ -69,7 +62,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ApiConstant } from "../../repository/APIConstant.js"
 import axios from 'axios';
-import defaultProfileImage from '@/assets/profileimage.png';
+import defaultProfileImage from '@/assets/add_item.jpg';
 
 export default {
     name: 'AddProduct',
@@ -86,9 +79,9 @@ export default {
             localStorage.removeItem('isSeller');
             this.$rouer.push({ name: 'Login' });
         }
-
+        
         await this.getProductTypes();
-
+        
     },
     data() {
         return {
@@ -96,23 +89,63 @@ export default {
             showCommentBox: false,
             form: null,
             token: "",
-
+            
             // add product
             name: "",
-            price: 0,
+            price: 0.00,
             description: "",
             productTypeId: 0,
             url: "",
             image: "",
-
+            
             // get product types
             productTypes: [],
             selectedProductType: null,
             selectedImage: null,
         }
-
+    },
+    computed: {
+        formattedPrice: {
+            get() {
+                // Display the price with two decimal places or "0.00" if the price is 0
+                return (this.price === 0) ? "0.00" : (this.price / 100).toFixed(2);
+            },
+            set(value) {
+                if (value <= 0){
+                    console.log("error trigger");
+                    this.price = 0.00;
+                    value = 0;
+                    return;
+                }
+                const newValue = String(value).replace(/[^0-9]/g, '');
+                // const nonNumeric = /\D/;
+                // return nonNumeric.test(str);
+                if (isNaN(newValue) || newValue === '') {
+                    console.log('Invalid input: contains non-numeric characters');
+                    return;
+                }
+                // Update the price only if it's a valid number or if the input is empty
+                if (!isNaN(newValue) || newValue === '') {
+                    this.price = parseFloat(newValue);
+                } else{
+                    this.price = 0;
+                }
+            },
+        },
     },
     methods: {
+        validateInput(event) {
+            let value = event.target.value;
+            if (value <= 0){
+                value = 0;
+            }
+            const newValue = String(value).replace(/[^0-9]/g, '');
+            if (isNaN(newValue) || newValue === '') {
+                console.log('Invalid input: contains non-numeric characters');
+                value = 0;
+            }
+            this.price = parseFloat(newValue);
+        },
         triggerFileInput() {
             this.$refs.fileInput.click();
         },
@@ -249,11 +282,25 @@ main {
     margin-left: 10px;
     padding-left: 10px;
 }
-
+.image-container {
+  position: relative;
+  width: 180px;
+  height: 160px;
+  margin: 20px 20px;
+  border: 1px solid black;
+}
 div.row {
     margin-top: 10px;
 }
-
+.edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: white;  /* Change the color as needed */
+  background: rgba(0, 0, 0, 0.8);  /* Change the background as needed */
+  padding: 8px;
+  cursor: pointer;
+}
 .btn {
     color: var(--dark-color);
     background-color: var(--light-color);
@@ -268,8 +315,8 @@ div.row {
 }
 
 img {
-    width: 170px;
-    height: 170px;
+    width: 150px;
+    height: 150px;
 }
 
 .btn:hover {
@@ -281,7 +328,7 @@ img {
 @media (min-width: 992px) {
 
     main {
-        margin-left: 250px;
+        margin-left: 150px;
     }
 }
 </style>
