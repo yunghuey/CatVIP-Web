@@ -6,7 +6,7 @@
     <main class="mt-1 pt-3">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12 fw-bold fs-3">Expert Application</div>
+                <div class="col-md-12 fw-bold fs-3">Application History</div>
             </div>
             
             <!-- table all -->
@@ -16,29 +16,17 @@
                         <tr>
                             <th>No</th>
                             <th>Full Name</th>
-                            <th>Status</th>
+                            <th>Application Status</th>
                             <th>Updated Date</th>
                             <th>Remark</th>
                             <th>View More</th>
                             <th hidden>Id</th>
                         </tr>
                     </thead>
-                    <!-- <tbody>
-                        <tr v-for="(exp, index) in allexperts" :key="index">
-                            <td v-text="index+1"></td>
-                            <td v-text="allexpertname[index]"></td>
-                            <td v-text="exp.status"></td>
-                            <td v-text="formatDate(exp.dateTime)"></td>
-                            <td v-text="exp.rejectedReason"></td>
-                            <td><router-link :to="{name: 'ExpertForm', params: {id: exp.id}}" class="hyperlink">View</router-link></td>
-                        </tr>
-                    </tbody> -->
                 </table>
             </div>
-
         </div>
     </main>
-
 </template>
 
 <script>
