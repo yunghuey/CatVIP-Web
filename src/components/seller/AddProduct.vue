@@ -9,12 +9,19 @@
             <div v-if="hasData == true">
                 <div class="card my-3 ps-3">
                     <div class="card-body">
-                        <p><img :src="getImageSource()" alt=""></p>                        
-                        <p>Product name : <span v-text="name"></span></p>
+                        <p><img :src="getImageSource()" alt=""></p>
                         <p>Product name : <span v-text="name"></span></p>
                         <p>Description: <span v-text="description"></span></p>
                         <p>Price: <span v-text="price"></span></p>
-                        <p>URL: <span v-text="url"></span></p>
+                        <p>URL: <span v-text="url"></span></p>-->
+                    </div> 
+                    <div class="row">
+                        <div class="image-container">
+                            <img :src="getImageSource()" alt="" class="profile-image">
+                            <i class="bi bi-pencil-fill edit-icon" @click="triggerFileInput"></i>
+                            <input class="form-control" type="file" id="formFile" ref="fileInput" @change="onFileSelected"
+                                accept="image/*" hidden>
+                        </div>
                     </div>
                     <div class="row px-3 py-1">
                         <label for="productName">Product Name:</label>
@@ -28,7 +35,7 @@
 
                     <div class="row px-3 py-1">
                         <label for="productPrice">Price:</label>
-                        <input type="number" id="productPrice" v-model="price" class="form-control">
+                        <input type="number" id="productPrice" v-model="price" class="form-control" min="0">
                     </div>
 
                     <div class="row px-3 py-1">
@@ -45,9 +52,9 @@
                         </select>
 
                     </div>
-                    <div class="row">
-                        <div class="col-4 justify-content-end">
-                            <input type="submit" class="btn" v-on:click="addProduct()">
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-4 text-center">
+                            <input type="submit" class="btn mb-3" v-on:click="addProduct()">
                         </div>
                     </div>
                 </div>
@@ -101,26 +108,49 @@ export default {
             // get product types
             productTypes: [],
             selectedProductType: null,
+            selectedImage: null,
         }
 
     },
     methods: {
+        triggerFileInput() {
+            this.$refs.fileInput.click();
+        },
+        onFileSelected(event) {
+            this.selectedImage = event.target.files[0];
+
+            if (this.selectedImage && this.selectedImage.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // `reader.result` contains the base64 string
+                    const base64Url = reader.result;
+                    // Do something with the base64 string, such as assigning it to a variable
+                    const [, base64String] = base64Url.split(',');
+                    this.image = base64String;
+                };
+                reader.readAsDataURL(this.selectedImage);
+            }
+            else {
+                // Display an error message or take appropriate action
+                console.log('Invalid file type. Please select an image.');
+            }
+        },
         async addProduct() {
-            // if (this.status == "3" && this.comment == "") {
-            //     alert("Please insert rejected reason");
-            //     return;
-            // }
+            if (this.image == "" && this.name == "") {
+                alert("Please insert an image");
+                return;
+            }
             try {
-                // let token = localStorage.getItem('token');
-                // if (!token) {
-                //     console.error("Token not found in localStorage");
-                //     return;
-                // }
                 console.log("add")
+                console.log(this.image);
+                
                 var header = {
                     "Content-Type": "application/json",
                     "Authorization": "bearer " + this.token,
                 };
+                if (this.image != ""){
+                this.image = this.image.split(',')[1];
+            }
                 var body = {
                     "name": this.name,
                     "price": this.price,
@@ -159,40 +189,6 @@ export default {
             ).then(
                 res => {
                     this.productTypes = res.data;
-                    // console.log(this.posts);
-                    // this.tableData = this.createData();
-                    // this.columndata = [
-                    //     { title: 'No', data: 'index' },
-                    //     { title: 'Full Name', data: 'name' },
-                    //     { title: 'Reported Date', data: 'date' },
-                    //     { title: 'View More', data: 'button' },
-                    //     { title: 'Id', visible: false, data: 'id' },
-                    //     { title: 'Images', visible: false, data: 'images', render: this.renderImages }
-                    // ]
-                    // this.$nextTick(() => {
-
-                    //     if ($.fn.DataTable.isDataTable("#viewall")) {
-                    //         $("#viewall").DataTable().clear().draw();
-                    //         $("#viewall").DataTable().destroy();
-                    //         $("#viewall thead").html('');
-                    //     }
-
-                    //     let table = $("#viewall").DataTable({
-                    //         data: this.tableData,
-                    //         destroy: true,
-                    //         paging: true,
-                    //         columns: this.columndata,
-                    //     });
-                    //     $('#viewall tbody').on('click', 'a', (event) => {
-                    //         let data = table.row($(event.target).closest('tr')).data();
-                    //         console.log("event:", JSON.stringify(data));
-                    //         this.$router.push({
-                    //             name: 'ReviewPost',
-                    //             params: { id: data.id },
-                    //             query: { postImages: JSON.stringify(data.images) }
-                    //         });
-                    //     });
-                    // });
                 }
             ).catch(
                 error => {
@@ -203,9 +199,15 @@ export default {
             );
         },
         getImageSource() {
-            if (this.profileimg64 && this.profileimg64 !== "") {
-                this.profileimg64 = 'data:image/png;base64,' + this.profileimg64;
-                const blob = this.dataURLtoBlob(this.profileimg64);
+            if (this.image && this.image !== "") {
+                // decode the string
+                // create blob
+
+                if (!this.image.startsWith('data:image/png;base64,')) {
+                    this.image = 'data:image/png;base64,' + this.image;
+                }
+                const blob = this.dataURLtoBlob(this.image);
+                // create data url from blob
                 const dataUrl = URL.createObjectURL(blob);
                 return dataUrl;
             } else {
@@ -213,8 +215,13 @@ export default {
             }
         },
         dataURLtoBlob(dataURL) {
+            // Convert base64 to raw binary data held in a string
             const byteString = atob(dataURL.split(',')[1]);
+
+            // Separate the MIME component
             const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+
+            // Write the bytes of the string to an ArrayBuffer
             const ab = new ArrayBuffer(byteString.length);
             const ia = new Uint8Array(ab);
             for (let i = 0; i < byteString.length; i++) {
