@@ -128,6 +128,7 @@ export default{
                 return;
             }
             console.log(this.profileimg64);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             if (this.profileimg64 != ""){
                 this.profileimg64 = this.profileimg64.split(',')[1];
             }
