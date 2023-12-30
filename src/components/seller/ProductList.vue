@@ -54,8 +54,8 @@
 import Navbar from '@/components/seller/sellernav.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import * as bootstrap from 'bootstrap';
-window.bootstrap = bootstrap;
+// import * as bootstrap from 'bootstrap';
+// window.bootstrap = bootstrap;
 import { ApiConstant } from "../../repository/APIConstant.js"
 import axios from 'axios';
 import DataTable from 'datatables.net-vue3';
