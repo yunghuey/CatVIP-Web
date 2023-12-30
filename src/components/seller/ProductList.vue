@@ -12,7 +12,7 @@
             </div>
 
             <div class="row px-3 py-1">
-                <table class="table table-striped" id="viewall">
+                <table class="table table-striped table-condensed" id="viewall" style="width: auto;">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -38,6 +38,7 @@
                         </div>
                     <div class="modal-body">
                         Do you want to delete this product?
+                        <!-- <span v-text="productId"></span> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -52,15 +53,13 @@
 
 <script>
 import Navbar from '@/components/seller/sellernav.vue';
+import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-// import * as bootstrap from 'bootstrap';
-// window.bootstrap = bootstrap;
 import { ApiConstant } from "../../repository/APIConstant.js"
 import axios from 'axios';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
-import $ from 'jquery';
 DataTable.use(DataTablesCore);
 
 export default{
@@ -80,7 +79,6 @@ export default{
     },
     async mounted(){
         let user = localStorage.getItem('token');
-        console.log("heloo", user)
         let seller = localStorage.getItem('isSeller');
         this.token = user.substring(1, user.length -1);
         if (!user || seller == "no"){
@@ -127,25 +125,17 @@ export default{
                             columns: this.columnData,
                         });
                     
-                        $('#viewall tbody').on('click', 'a.edit', (event) => {
+                        $('#viewall tbody').on('click', 'button.edit', (event) => {
                             let data = table.row($(event.target).closest('tr')).data();
                             console.log("Edit event:", JSON.stringify(data));
                             this.$router.push({ name: 'EditProduct', params: { id: data.id } });
                         });
 
                         // For Delete
-                        $('#viewall tbody').on('click', 'a.delete', (event) => {
+                        $('#viewall tbody').on('click', 'button.delete', (event) => {
                             let data = table.row($(event.target).closest('tr')).data();
                             console.log("Delete event:", JSON.stringify(data));
-                            this.productId = data.id;                            // delete function
-                            let modalElement = document.getElementById('deleteModal');
-                            if (modalElement){
-                                let modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
-                                 modalInstance.show();
-                            }
-                            else{
-                                console.error('Modal element not found');
-                            }
+                            this.productId = data.id;
                         });
                     });
                 }
@@ -160,8 +150,8 @@ export default{
                     price: prod.price,
                     desc: prod.description,
                     url: prod.url,
-                    buttonEdit:"<a class='edit'>Edit</a>",
-                    buttonDelete: "<a class='delete' data-bs-toggle='deleteModal'>Delete</a>",
+                    buttonEdit:"<button class='edit btn btn-edit'>Edit</button>",
+                    buttonDelete: "<button type='button' class='btn btn-alert delete' data-bs-toggle='modal' data-bs-target='#deleteModal'>Delete</button>",
                     id: prod.id,
                 }
             });
@@ -203,6 +193,10 @@ div.float-end button{
 main{
     margin-left: 10px;
     padding-left: 10px;
+}
+/* Move search bar to the end */
+.col-sm-12{
+    color: red;
 }
 @media (min-width: 992px){
     main{

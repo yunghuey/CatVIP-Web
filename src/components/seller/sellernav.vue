@@ -5,8 +5,10 @@
                     <span class="navbar-toggler-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"></span>
             </button>
 
-            <a class="navbar-brand fw-bold me-auto">CatViP</a>
-
+            <a class="navbar-brand fw-bold me-auto" href="#">
+                <img src="../../assets/logo.png" alt="" width="40px">
+                CatViP
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -93,22 +95,35 @@ export default {
     --offcanvas-width: 270px;
     --topNavbarHeight: 46px;
 }
+.p-1.my-1.display{
+    font-size: 18px;
+}
 nav{
     position: sticky;
     top:0;
     z-index: 2;
 }
-.p-1.my-1.display{
-    font-size: 20px;
-}
 .p-1.my-1.display:hover{
     color:darkslategray;
 }
 .offcanvas.offcanvas-start.sidebar-nav{
+
     width: var(--offcanvas-width);
 }
 .hyperlink{
     text-decoration: none;
+}
+.sidebar-link{
+    display: flex;
+    align-items: center;
+}
+.sidebar-link .right-icon{
+    display: inline-flex;
+    transition: all ease 0.25s;
+}
+
+.sidebar-link[aria-expanded='true'] .right-icon{
+    transform: rotate(180deg);
 }
 
 @media (min-width: 992px){
@@ -122,7 +137,7 @@ nav{
     .offcanvas.offcanvas-start.sidebar-nav{
         transform: none;
         visibility: visible !important;
-        top: 56px;
+        top: 68px;
         height: calc(100% - var(--topNavbarHeight));
     }
 }
