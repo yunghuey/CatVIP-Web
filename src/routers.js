@@ -12,6 +12,7 @@ import ReviewPost from "./components/admin/post/ReviewPost.vue";
 import SellerHome from "./components/seller/sellerhome.vue";
 import ProductList from "./components/seller/ProductList.vue";
 import AddProduct from "./components/seller/AddProduct.vue";
+import EditProduct from "./components/seller/EditProduct.vue";
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
@@ -81,6 +82,11 @@ const routes = [
         name: 'AddProduct',
         component: AddProduct,
         path: '/seller/addProduct'
+    },
+    {
+        name: 'EditProduct',
+        component: EditProduct,
+        path: '/seller/editProduct/:id'
     },
 ];
 
