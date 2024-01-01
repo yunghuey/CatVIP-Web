@@ -178,14 +178,10 @@ export default{
         },
         getImageSource() {
             if (this.profileimg64 && this.profileimg64 !== "") {
-                // decode the string
-                // create blob
-
                 if (!this.profileimg64.startsWith('data:image/png;base64,')) {
                     this.profileimg64 = 'data:image/png;base64,' + this.profileimg64;
                 }                
                 const blob = this.dataURLtoBlob(this.profileimg64);
-                                // create data url from blob
                 const dataUrl = URL.createObjectURL(blob);
                 return dataUrl;
             } else {
@@ -193,20 +189,13 @@ export default{
             }
         },
         dataURLtoBlob(dataURL) {
-            // Convert base64 to raw binary data held in a string
             const byteString = atob(dataURL.split(',')[1]);
-
-            // Separate the MIME component
             const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
-
-            // Write the bytes of the string to an ArrayBuffer
             const ab = new ArrayBuffer(byteString.length);
             const ia = new Uint8Array(ab);
             for (let i = 0; i < byteString.length; i++) {
                 ia[i] = byteString.charCodeAt(i);
             }
-
-            // Create a Blob from the ArrayBuffer
             return new Blob([ab], { type: mimeString });
         },
         async getUserInfo(){
@@ -273,8 +262,8 @@ img{
   position: absolute;
   bottom: 0;
   right: 0;
-  color: white;  /* Change the color as needed */
-  background: rgba(0, 0, 0, 0.8);  /* Change the background as needed */
+  color: white;
+  background: rgba(0, 0, 0, 0.8);
   padding: 8px;
   cursor: pointer;
 }

@@ -45,7 +45,6 @@ export default{
         let user = localStorage.getItem('token');
         this.token = user.substring(1, user.length-1);
         this.getUserCount(); 
-
     },
     methods: {
         async getUserCount(){
@@ -59,12 +58,10 @@ export default{
                     {headers: header}
                 );
                 if (result.status == 200){
-                    console.log(result.data);
                     this.totalExpertCount = result.data["Cat Experts"];
                     this.totalOwnerCount = result.data["Cat Owners"];
                     this.totalNewUser = result.data["New Users"];
                     this.totalProducts = result.data["Products"];
-                    // assign here
                 }
             } catch (e) {
                 console.log(e);

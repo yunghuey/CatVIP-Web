@@ -53,13 +53,14 @@ export default{
     mounted(){
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
-        this.token = user.substring(1, user.length-1);
+        console.log(user, seller);
         if (!user || seller == "yes"){
             console.log("got rejected in Home");
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
-           this.$router.push({name: 'Login'});
+            this.$router.push({name: 'Login'});
         }
+        this.token = user.substring(1, user.length-1);
     },
     methods:{
        

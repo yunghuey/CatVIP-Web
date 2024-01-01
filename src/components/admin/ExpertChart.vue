@@ -68,18 +68,15 @@ export default{
                     "Authorization": "bearer " + this.token,
                 };
                 var url = ApiConstant.GetExpertTipsCountURL + query;
-                console.log(url);
                 const result = await axios.get(
                     url, {headers: header}
                 );
                 if (result.status == 200){
-                    console.log(result.data);
                     this.expertdata = result.data["Expert Tips"];
                     this.dailydata = result.data["Posts"];
                 }
            } catch (e) {
                 alert("Error in getting expert tips data...Please try again later");
-                console.log(e);
            }
         },
     }

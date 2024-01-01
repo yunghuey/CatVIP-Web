@@ -77,15 +77,12 @@ export default {
     };
   },
   async mounted() {
-    console.log("reloaded");
     let user = localStorage.getItem("token");
     this.token = user.substring(1, user.length - 1);
     await this.getMissingCatGraph("7days");
   },
   methods: {
     async getMissingCatGraph(query) {
-      console.log("insidee function");
-      console.log(query);
       if (query == "") {
         query = "7days";
       }
@@ -102,10 +99,7 @@ export default {
           Authorization: "bearer " + this.token,
         };
         var url = ApiConstant.GetCatCountURL + query;
-        console.log('part1' + url);
         
-        console.log("start date" + this.startDate);
-        console.log("end date" + this.endDate);
         if (query != "7days") {
           if (this.startDate != "") {
             url += "&startDate=" + this.startDate;
@@ -115,10 +109,9 @@ export default {
           }
         }
        
-        console.log(url);
         const result = await axios.get(url, { headers: header });
         if (result.status == 200) {
-          console.log(result.data);
+          // console.log(result.data);
           this.catchartlabel = Object.keys(result.data);
           this.catchartdata = Object.values(result.data);
           const ctx = document.getElementById("missing-cat");

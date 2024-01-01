@@ -95,7 +95,6 @@ import axios from 'axios';
                     });
                     if (result.status === 200) {
                         localStorage.setItem("token", JSON.stringify(result.data));
-                        console.log("statys 200");
                         if (this.username == 'admin'){
                             localStorage.setItem("isSeller", "no");
                             console.log("Going to home");

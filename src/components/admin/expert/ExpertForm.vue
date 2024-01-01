@@ -9,7 +9,7 @@
             <div v-if="hasData == true">
                 <div class="card my-3 ps-3">
                     <div class="card-body">
-                        <p><img :src="getImageSource()" alt=""></p>
+                        <img :src="getImageSource()" alt="Unable to display profile image">
                         <p>Full name : <span v-text="fullname"></span></p>
                         <p>Description: <span v-text="form.description"></span></p>
                         <div v-if="form.status == 'Pending'">
@@ -17,7 +17,7 @@
                         
                         <p v-if="form.status == 'Pending'">Application Date: <span v-text="formatDate(form.dateTime)"></span></p>
                         <p v-else>Approve Date: <span v-text="formatDate(form.dateTime)"></span></p>
-                        Document: <a v-on:click="showPdf(form.documentation, username)" class="download" style="text-decoration: underline;">View Document</a>
+                        Document: <a v-on:click="showPdf(form.documentation)" class="download" style="text-decoration: underline;">View Document</a>
                         <div v-if="form.status == 'Pending'">
                             <div class="row">
                             <div class="col-8 col-sm-6">
@@ -99,9 +99,12 @@ export default{
     methods:{
         getImageSource() {
             if (this.profileimg64 && this.profileimg64 !== "") {
-                this.profileimg64 = 'data:image/png;base64,' + this.profileimg64;
+                if (!this.profileimg64.startsWith('data:image/png;base64,')) {
+                    this.profileimg64 = 'data:image/png;base64,' + this.profileimg64;
+                }  
                 const blob = this.dataURLtoBlob(this.profileimg64);
                 const dataUrl = URL.createObjectURL(blob);
+                console.log(dataUrl);
                 return dataUrl;
             } else {
                 return defaultProfileImage;
@@ -115,8 +118,6 @@ export default{
             for (let i = 0; i < byteString.length; i++) {
                 ia[i] = byteString.charCodeAt(i);
             }
-
-            // Create a Blob from the ArrayBuffer
             return new Blob([ab], { type: mimeString });
         },
         checkChoice(){
@@ -148,11 +149,9 @@ export default{
                 if (result.status == 200){
                     this.$router.push({name: 'Expert'});
                 }else{
-                    console.log(result);
                 }
             } catch(e){
                 this.hasData = false;
-                console.log(e.response.data);
             }
         },
         formatDate(dateString){
@@ -167,7 +166,7 @@ export default{
         showPdf(base64string, username){
             const link = document.createElement('a');
             link.href = `data:application/pdf;base64,${base64string}`;
-            link.download = username + '.pdf';
+            link.download = 'expert.pdf';
             link.click();
         },
         getSingleForm(id){
@@ -215,6 +214,7 @@ export default{
                     res => {                       
                         this.fullname = res.data.fullName;
                         this.profileimg64 = res.data.profileImage;
+                        console.log(this.profileimg64);
                     }
                 ).catch(
                     error => {
@@ -251,6 +251,8 @@ div.row{
 img{
     width: 170px;
     height: 170px;
+    border-radius: 10px;
+    border: 1px solid black;
 }
 .btn:hover{
     border: 1px solid var(--dark-color);

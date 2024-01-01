@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="row my-2">
-                <div class="col-sm-6 col-md-8 d-flex align-items-center justify-content-center">
+                <div class="col-sm-6 col-md-12 d-flex align-items-center justify-content-center">
                     <button class="btn" v-on:click="deletePost">Delete</button>
                 </div>
             </div>
@@ -74,9 +74,7 @@ export default {
             this.isSeller = true;
         }
 
-        console.log('Route Object:', this.$route);
         const postImages = JSON.parse(this.$route.query.postImages || 'null');
-        console.log('postImages:', postImages);
         this.id = this.$route.params.id;
         this.postImages = JSON.parse(this.$route.query.postImages || 'null');
 
@@ -131,13 +129,9 @@ export default {
         getImageSource() {
             if (Array.isArray(this.postImages) && this.postImages.length > 0) {
                 return this.postImages.map(item => {
-                    // Access the 'image' property of the object
                     const originalImage = item.image;
 
-                    // Check if image is a string
                     if (typeof originalImage === 'string') {
-                        // decode the string
-                        // create blob
                         let modifiedImage = originalImage;
                         console.log('hai', modifiedImage);
 
@@ -146,10 +140,8 @@ export default {
                         }
 
                         const blob = this.dataURLtoBlob(modifiedImage);
-                        // create data URL from blob
                         return URL.createObjectURL(blob);
                     } else {
-                        // Handle the case where image is not a string (perhaps a different data type)
                         console.error('Invalid image format:', originalImage);
                         return defaultProfileImage;
                     }
@@ -159,25 +151,17 @@ export default {
             }
         },
         dataURLtoBlob(dataURL) {
-            // Convert base64 to raw binary data held in a string
             const byteString = atob(dataURL.split(',')[1]);
-
-            // Separate the MIME component
             const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
-
-            // Write the bytes of the string to an ArrayBuffer
             const ab = new ArrayBuffer(byteString.length);
             const ia = new Uint8Array(ab);
             for (let i = 0; i < byteString.length; i++) {
                 ia[i] = byteString.charCodeAt(i);
             }
-
-            // Create a Blob from the ArrayBuffer
             return new Blob([ab], { type: mimeString });
         },
         async getReportedPostDetails() {
             console.log("hai test dulu");
-            // note: waiting update, havent fully tested
             let token = localStorage.getItem('token');
             token = token.substring(1, token.length - 1);
             var header = {
@@ -217,7 +201,6 @@ export default {
                         console.log("After DataTable Initialization", table);
                         $('#viewall tbody').on('click', 'a', (event) => {
                             let data = table.row($(event.target).closest('tr')).data();
-                            console.log("event:", JSON.stringify(data));
                             this.$router.push({
                                 name: 'ReviewPost',
                                 params: { id: data.id },
@@ -281,10 +264,12 @@ img {
 }
 
 .image-container {
+    display: flex;
     position: relative;
     width: 200px;
     height: 200px;
-    margin: 20px 20px;
+    padding: 0;
+    margin: 10px 10px;
     border: 1px solid black;
 }
 
@@ -298,9 +283,7 @@ img {
     bottom: 0;
     right: 0;
     color: white;
-    /* Change the color as needed */
     background: rgba(0, 0, 0, 0.8);
-    /* Change the background as needed */
     padding: 8px;
     cursor: pointer;
 }
@@ -347,10 +330,8 @@ input[type='radio']:checked:after {
 }
 
 @media (min-width: 992px) {
-
     main {
         margin-left: 250px;
     }
-
 }
 </style>
