@@ -1,6 +1,5 @@
 <template>
-    <Navbar v-if="!isSeller"></Navbar>
-    <Navbar2 v-else></Navbar2>
+    <Navbar></Navbar>
     <!-- start code here -->
     <main class="mt-1 pt-3">
         <div class="container-fluid">
@@ -14,7 +13,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div v-if="imageSources.length > 0" v-for="(imageSource, index) in imageSources" :key="index"
+                <div v-if="(imageSources.length > 0)" v-for="(imageSource, index) in imageSources" :key="index"
                     class="image-container">
                     <img :src="imageSource" alt="" class="post-image">
                 </div>
@@ -44,7 +43,6 @@
 
 <script>
 import Navbar from '@/components/admin/sidenav.vue';
-import Navbar2 from '@/components/seller/sellernav.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ApiConstant } from "../../../repository/APIConstant.js"
@@ -58,33 +56,27 @@ export default {
     name: "ReviewPost",
     components: {
         Navbar,
-        Navbar2,
     },
     async mounted() {
         let user = localStorage.getItem('token');
         let seller = localStorage.getItem('isSeller');
-        this.token = user.substring(1, user.length - 1);
-        if (!user) {
+        if (!user || seller == "yes"){
             console.log("got rejected in Home");
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
             this.$router.push({ name: 'Login' });
+        } else {
+            this.token = user.substring(1, user.length - 1);
+            const postImages = JSON.parse(this.$route.query.postImages || 'null');
+            this.id = this.$route.params.id;
+            this.postImages = JSON.parse(this.$route.query.postImages || 'null');
+            await this.getReportedPostDetails();
+            this.imageSources = this.getImageSource();
         }
-        if (seller == "yes") {
-            this.isSeller = true;
-        }
-
-        const postImages = JSON.parse(this.$route.query.postImages || 'null');
-        this.id = this.$route.params.id;
-        this.postImages = JSON.parse(this.$route.query.postImages || 'null');
-
-        await this.getReportedPostDetails();
-        this.imageSources = this.getImageSource();
     },
     data() {
         return {
             token: '',
-            isSeller: false,
             displayMessage: true,
             imageSources: [],
             username: '',
@@ -104,9 +96,7 @@ export default {
                 "Authorization": "bearer " + this.token,
             };
             var url = ApiConstant.DeletePostURL + this.id;
-            await axios.delete(
-                url,
-                { headers: header }
+            await axios.delete(url,{ headers: header }
             ).then(
                 res => {
                     if (res.status == 200) {

@@ -159,14 +159,15 @@ export default {
   async mounted() {
     let user = localStorage.getItem('token');
     let seller = localStorage.getItem('isSeller');
-    this.token = user.substring(1, user.length - 1);
     if (!user || seller == "yes") {
       localStorage.removeItem('token');
       localStorage.removeItem('isSeller');
       this.$router.push({ name: 'Login' });
     }
-
-    await this.getPendingFunc();
+    else {
+      this.token = user.substring(1, user.length - 1);
+      await this.getPendingFunc();
+    }
   },
   created() {
    const reloaded = localStorage.getItem('reloadedpending');

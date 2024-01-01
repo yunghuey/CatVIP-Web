@@ -9,7 +9,6 @@ import ExpertForm from "./components/admin/expert/ExpertForm.vue";
 import ExpertPending from "./components/admin/expert/ExpertPending.vue";
 import ReportedPosts from "./components/admin/post/ReportedPosts.vue";
 import ReviewPost from "./components/admin/post/ReviewPost.vue";
-import SellerHome from "./components/seller/sellerhome.vue";
 import ProductList from "./components/seller/ProductList.vue";
 import AddProduct from "./components/seller/AddProduct.vue";
 import EditProduct from "./components/seller/EditProduct.vue";
@@ -56,11 +55,6 @@ const routes = [
         name: 'ReportedPosts',
         component: ReportedPosts,
         path: '/post/reportedposts'
-    },
-    {
-        name: 'Seller',
-        component: SellerHome,
-        path: '/seller'
     },
     {
         name: 'EditProfile',

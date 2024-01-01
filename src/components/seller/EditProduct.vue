@@ -8,13 +8,6 @@
             </div>
             <div v-if="hasData == true">
                 <div class="card my-3 ps-3">
-                    <!--  <div class="card-body">
-                        <p><img :src="getImageSource()" alt=""></p>
-                        <p>Product name : <span v-text="name"></span></p>
-                        <p>Description: <span v-text="description"></span></p>
-                        <p>Price: <span v-text="price"></span></p>
-                        <p>URL: <span v-text="url"></span></p>
-                    </div> -->
                     <div class="row">
                         <div class="image-container">
                             <img :src="getImageSource()" alt="" class="profile-image">
@@ -69,33 +62,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ApiConstant } from "../../repository/APIConstant.js"
 import axios from 'axios';
-import defaultProfileImage from '@/assets/profileimage.png';
+import defaultProfileImage from '@/assets/add_item.jpg';
 
 export default {
     name: 'EditProduct',
     components: {
         Navbar,
     },
-    async mounted() {
+    async mounted(){
         let user = localStorage.getItem('token');
-        console.log("heloo", user)
         let seller = localStorage.getItem('isSeller');
-        this.token = user.substring(1, user.length - 1);
-        if (!user || seller == "no") {
+        if (!user || seller == "no"){
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
-            this.$rouer.push({ name: 'Login' });
-        }
-
-        //await this.getProduct();
-        this.id = this.$route.params.id;
-        console.log(this.id)
-
-       // Fetch product data and assign it to this.product
-       await this.getProductTypes();
-       await this.getProduct();
-        
-
+            this.$router.push({name: 'Login'});
+        } else{
+            this.token = user.substring(1, user.length -1);
+            this.id = this.$route.params.id;
+            console.log(this.id)
+           // Fetch product data and assign it to this.product
+           await this.getProductTypes();
+           await this.getProduct();
+        }   
     },
     data() {
         return {
@@ -129,23 +117,19 @@ export default {
             if (this.selectedImage && this.selectedImage.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = () => {
-                    // `reader.result` contains the base64 string
                     const base64Url = reader.result;
-                    // Do something with the base64 string, such as assigning it to a variable
                     const [, base64String] = base64Url.split(',');
                     this.image = base64String;
                 };
                 reader.readAsDataURL(this.selectedImage);
             }
             else {
-                // Display an error message or take appropriate action
                 console.log('Invalid file type. Please select an image.');
             }
         },
         async getProductTypes() {
             console.log("hai")
             console.log(this.token)
-            // note: waiting update, havent fully tested
             var header = {
                 "Content-Type": "application/json",
                 "Authorization": "bearer " + this.token,
@@ -320,7 +304,7 @@ img {
 @media (min-width: 992px) {
 
     main {
-        margin-left: 250px;
+        margin-left: 150px;
     }
 }
 </style>

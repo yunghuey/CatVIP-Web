@@ -43,8 +43,16 @@ export default{
     },
     async mounted(){
         let user = localStorage.getItem('token');
-        this.token = user.substring(1, user.length-1);
-        this.getUserCount(); 
+        let seller = localStorage.getItem('isSeller');
+        if (!user || seller == "yes"){
+            localStorage.removeItem('token');
+            localStorage.removeItem('isSeller');
+            this.$router.push({name: 'Login'});
+        } 
+        else {
+            this.token = user.substring(1, user.length -1);
+            await this.getUserCount(); 
+        }        
     },
     methods: {
         async getUserCount(){

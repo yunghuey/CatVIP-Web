@@ -49,9 +49,11 @@ export default {
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
             this.$router.push({ name: 'Login' });
+        } else{
+            this.token = user.substring(1, user.length -1);
+            this.id = this.$route.params.id;
+            await this.getReportedPosts();
         }
-        this.id = this.$route.params.id;
-        await this.getReportedPosts();
     },
     created() {
         const reloaded = localStorage.getItem('reloadedpending');
@@ -66,18 +68,14 @@ export default {
     data() {
         return {
             token: "",
-            posts: []
-
+            posts: [],
         }
     },
     methods: {
         async getReportedPosts() {
-            // note: waiting update, havent fully tested
-            let token = localStorage.getItem('token');
-            token = token.substring(1, token.length - 1);
             var header = {
                 "Content-Type": "application/json",
-                "Authorization": "bearer " + token,
+                "Authorization": "bearer " + this.token,
             };
             axios.get(
                 ApiConstant.GetReportedPostsURL,

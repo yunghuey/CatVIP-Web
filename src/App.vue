@@ -10,4 +10,6 @@ export default {
 
 <style>
   @import './assets/style.css';
-</style>
+  @import 'bootstrap';
+  @import 'datatables.net-bs5';
+ </style>

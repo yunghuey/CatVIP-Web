@@ -69,19 +69,17 @@ export default {
     components: {
         Navbar,
     },
-    async mounted() {
+    async mounted(){
         let user = localStorage.getItem('token');
-        console.log("heloo", user)
         let seller = localStorage.getItem('isSeller');
-        this.token = user.substring(1, user.length - 1);
-        if (!user || seller == "no") {
+        if (!user || seller == "no"){
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
-            this.$rouer.push({ name: 'Login' });
-        }
-        
-        await this.getProductTypes();
-        
+            this.$router.push({name: 'Login'});
+        } else{
+            this.token = user.substring(1, user.length -1);
+            await this.getProductTypes();
+        }   
     },
     data() {
         return {
@@ -174,9 +172,6 @@ export default {
                 return;
             }
             try {
-                console.log("add")
-                console.log(this.image);
-                
                 var header = {
                     "Content-Type": "application/json",
                     "Authorization": "bearer " + this.token,
