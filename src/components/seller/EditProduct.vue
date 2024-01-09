@@ -28,7 +28,8 @@
 
                     <div class="row px-3 py-1">
                         <label for="productPrice">Price:</label>
-                        <input type="number" id="productPrice" v-model="price" class="form-control" min="0">
+                        <!-- <input type="number" id="productPrice" v-model="price" class="form-control" min="0"> -->
+                        <input type="text" id="productPrice" v-model="formattedPrice" @input="validateInput" class="form-control">
                     </div>
 
                     <div class="row px-3 py-1">
@@ -53,6 +54,7 @@
                 </div>
             </div>
         </div>
+    
     </main>
 </template>
 
@@ -105,11 +107,51 @@ export default {
             selectedProductType: null,
             selectedImage: null,
         }
-
+    },
+    computed: {
+        formattedPrice: {
+            get() {
+                // Display the price with two decimal places or "0.00" if the price is 0
+                return (this.price === 0) ? "0.00" : (this.price / 100).toFixed(2);
+            },
+            set(value) {
+                if (value <= 0){
+                    console.log("error trigger");
+                    this.price = 0.00;
+                    value = 0;
+                    return;
+                }
+                const newValue = String(value).replace(/[^0-9]/g, '');
+                // const nonNumeric = /\D/;
+                // return nonNumeric.test(str);
+                if (isNaN(newValue) || newValue === '') {
+                    console.log('Invalid input: contains non-numeric characters');
+                    return;
+                }
+                // Update the price only if it's a valid number or if the input is empty
+                if (!isNaN(newValue) || newValue === '') {
+                    this.price = parseFloat(newValue);
+                } else{
+                    this.price = 0;
+                }
+            },
+        },
     },
     methods: {
         triggerFileInput() {
             this.$refs.fileInput.click();
+        },
+        validateInput(event) {
+            let value = event.target.value;
+            if (value <= 0){
+                value = 0;
+            }
+            const newValue = String(value).replace(/[^0-9]/g, '');
+            if (isNaN(newValue) || newValue === '') {
+                console.log('Invalid input: contains non-numeric characters');
+                value = 0;
+            }
+            this.price = parseFloat(newValue);
         },
         onFileSelected(event) {
             this.selectedImage = event.target.files[0];
@@ -167,7 +209,7 @@ export default {
                 }
                 var body = {
                     "name": this.name,
-                    "price": this.price,
+                    "price": this.price / 100,
                     "description": this.description,
                     "productTypeId": this.selectedProductType,
                     "url": this.url,
@@ -205,7 +247,7 @@ export default {
                     this.product = res.data;
                     this.name = this.product.name;
                     this.description = this.product.description;
-                    this.price = this.product.price;
+                    this.price = this.product.price* 100;
                     this.productTypeId = this.product.productTypeId;
                     this.url = this.product.url;
                     this.image = this.product.image;

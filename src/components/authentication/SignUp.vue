@@ -100,7 +100,7 @@ export default {
 
             const hasbirthdayoccurred = (
                 currentDate.getMonth() > birthdate.getMonth() || 
-                (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() >= birthDate.getDate())
+                (currentDate.getMonth() === birthdate.getMonth() && currentDate.getDate() >= birthdate.getDate())
             );
             if (!hasbirthdayoccurred){
                 age--;

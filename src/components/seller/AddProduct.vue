@@ -181,7 +181,7 @@ export default {
             }
                 var body = {
                     "name": this.name,
-                    "price": this.price,
+                    "price": this.price/100,
                     "description": this.description,
                     "productTypeId": this.selectedProductType,
                     "url": this.url,

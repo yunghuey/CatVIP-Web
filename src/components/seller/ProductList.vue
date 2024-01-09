@@ -148,7 +148,7 @@ export default{
                 return {
                     index: index + 1,
                     productname: prod.name,
-                    price: prod.price,
+                    price: parseFloat(prod.price).toFixed(2),
                     desc: prod.description,
                     url: prod.url,
                     buttonEdit:"<button class='edit btn btn-edit'>Edit</button>",
