@@ -38,7 +38,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Full Name</th>
+                                <th>Reporter Full Name</th>
                                 <th>Remark</th>
                                 <th>Reported Date</th>
                             </tr>
@@ -211,7 +211,7 @@ export default {
                     this.tableData = this.createData();
                     this.columndata = [
                         { title: 'No', data: 'index' },
-                        { title: 'Full Name', data: 'name' },
+                        { title: 'Reporter Full Name', data: 'name' },
                         { title: 'Remark', data: 'remark' },
                         { title: 'Reported Date', data: 'date' },
                     ]
@@ -296,10 +296,11 @@ img {
 }
 
 .image-container {
-    position: relative;
-    width: 200px;
-    height: 200px;
+    /* position: relative; */
+    width: 202px;
+    height: 202px;
     margin: 20px 20px;
+    padding: 0;
     border: 1px solid black;
 }
 

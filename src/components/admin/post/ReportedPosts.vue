@@ -14,8 +14,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Full Name</th>
-                            <th>Reported Date</th>
+                            <th>Posted by</th>
+                            <th>Posted Date</th>
                             <th>View More</th>
                             <th hidden>Id</th>
 
@@ -101,8 +101,8 @@ export default {
                     this.tableData = this.createData();
                     this.columndata = [
                         { title: 'No', data: 'index' },
-                        { title: 'Full Name', data: 'name' },
-                        { title: 'Reported Date', data: 'date' },
+                        { title: 'Posted By', data: 'name' },
+                        { title: 'Posted Date', data: 'date' },
                         { title: 'View More', data: 'button' },
                         { title: 'Id', visible: false, data: 'id' },
                         { title: 'Images', visible: false, data: 'images', render: this.renderImages }
