@@ -46,7 +46,7 @@
                     </table>
                 </div>
             </div>
-            <div class="row my-2">
+            <div class="row justify-content-center">
                 <div class="col-sm-6 col-md-8 d-flex align-items-center justify-content-center">
                     <button class="btn" v-on:click="deletePost">Delete</button>
                 </div>
