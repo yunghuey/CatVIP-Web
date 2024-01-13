@@ -12,11 +12,24 @@
                     <b :class="{ 'text-success': displayMessage }" style="white-space: pre-line; font-size: large;">{{
                         updateMessage }}</b>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 text-center fw-bold fs-4">
+                        {{ this.postTypeId == 1 ? 'Daily Sharing' : this.postTypeId == 2 ? 'Expert Tips' : '' }}
+                    </div>
+                </div>
             </div>
             <div class="row justify-content-center">
                 <div v-if="imageSources.length > 0" v-for="(imageSource, index) in imageSources" :key="index"
                     class="image-container">
                     <img :src="imageSource" alt="" class="post-image">
+                </div>
+                <div v-else>
+                    <!-- This block is empty, so nothing will be displayed when imageSources.length is 0 -->
+                </div>
+                <div class="col-12 text-center">
+                    <div class="description-container">
+                        {{ this.description }}
+                    </div>
                 </div>
             </div>
             <div class="row px-3 py-1">
@@ -79,6 +92,8 @@ export default {
         console.log('postImages:', postImages);
         this.id = this.$route.params.id;
         this.postImages = JSON.parse(this.$route.query.postImages || 'null');
+        this.description = this.$route.query.description;
+        this.postTypeId = this.$route.query.postTypeId;
 
         await this.getReportedPostDetails();
         this.imageSources = this.getImageSource();
@@ -155,7 +170,7 @@ export default {
                     }
                 });
             } else {
-                return [defaultProfileImage];
+                //return [defaultProfileImage];
             }
         },
         dataURLtoBlob(dataURL) {

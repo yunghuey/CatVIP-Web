@@ -127,7 +127,11 @@ export default {
                             this.$router.push({
                                 name: 'ReviewPost',
                                 params: { id: data.id },
-                                query: { postImages: JSON.stringify(data.images) }
+                                query: { 
+                                    postTypeId: data.postTypeId,
+                                    description: data.description,
+                                    postImages: JSON.stringify(data.images) 
+                                }
                             });
                         });
                     });
@@ -148,6 +152,8 @@ export default {
                     date: this.formatDate(post.dateTime),
                     id: post.id,
                     images: post.postImages,
+                    description: post.description,
+                    postTypeId: post.postTypeId,
                     button: "<a class='link'>View</a>"
                 };
             });

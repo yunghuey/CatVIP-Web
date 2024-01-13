@@ -1,5 +1,5 @@
 // api-constants.js
-const apiUrl = "http://192.168.0.126:7015/api/";
+const apiUrl = "http://192.168.0.122:7015/api/";
 
 export const ApiConstant = {
   URL: apiUrl,
