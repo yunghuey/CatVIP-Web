@@ -12,6 +12,7 @@
                 </div>
                 <div class="col-md-4">
                     <span class="text-title">Total New User</span><br/>
+                    <span class="text-small">In recent one month</span><br/>
                     <span class="text-figure" v-text="totalNewUser"></span>
                 </div>
             </div>   
@@ -85,6 +86,14 @@ export default{
  div.row span.text-figure{
     font-size: 35px;
     font-weight: bold;
+}
+span.text-title{
+    font-size: 17px;
+}
+span.text-small{
+    color: grey;
+    font-weight: bold;
+    font-size: 15px;
 }
 </style>
 
