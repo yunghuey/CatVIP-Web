@@ -21,6 +21,16 @@
 
                         </tr>
                     </thead>
+                    <!-- <tbody>
+                        <tr v-for="(exp, index) in allexperts" :key="index">
+                            <td v-text="index+1"></td>
+                            <td v-text="allexpertname[index]"></td>
+                            <td v-text="exp.status"></td>
+                            <td v-text="formatDate(exp.dateTime)"></td>
+                            <td v-text="exp.rejectedReason"></td>
+                            <td><router-link :to="{name: 'ExpertForm', params: {id: exp.id}}" class="hyperlink">View</router-link></td>
+                        </tr>
+                    </tbody> -->
                 </table>
             </div>
 
@@ -49,11 +59,9 @@ export default {
             localStorage.removeItem('token');
             localStorage.removeItem('isSeller');
             this.$router.push({ name: 'Login' });
-        } else{
-            this.token = user.substring(1, user.length -1);
-            this.id = this.$route.params.id;
-            await this.getReportedPosts();
         }
+        this.id = this.$route.params.id;
+        await this.getReportedPosts();
     },
     created() {
         const reloaded = localStorage.getItem('reloadedpending');
@@ -68,15 +76,21 @@ export default {
     data() {
         return {
             token: "",
-            posts: [],
+            posts: []
+
         }
     },
     methods: {
         async getReportedPosts() {
+            console.log("hai")
+            // note: waiting update, havent fully tested
+            let token = localStorage.getItem('token');
+            token = token.substring(1, token.length - 1);
             var header = {
                 "Content-Type": "application/json",
-                "Authorization": "bearer " + this.token,
+                "Authorization": "bearer " + token,
             };
+            console.log(token);
             axios.get(
                 ApiConstant.GetReportedPostsURL,
                 { headers: header }
@@ -109,10 +123,15 @@ export default {
                         });
                         $('#viewall tbody').on('click', 'a', (event) => {
                             let data = table.row($(event.target).closest('tr')).data();
+                            console.log("event:", JSON.stringify(data));
                             this.$router.push({
                                 name: 'ReviewPost',
                                 params: { id: data.id },
-                                query: { postImages: JSON.stringify(data.images) }
+                                query: { 
+                                    postTypeId: data.postTypeId,
+                                    description: data.description,
+                                    postImages: JSON.stringify(data.images) 
+                                }
                             });
                         });
                     });
@@ -133,11 +152,14 @@ export default {
                     date: this.formatDate(post.dateTime),
                     id: post.id,
                     images: post.postImages,
+                    description: post.description,
+                    postTypeId: post.postTypeId,
                     button: "<a class='link'>View</a>"
                 };
             });
         },
         renderImages(data, type, row) {
+            console.log("image rendering");
             if (type === 'display') {
                 const imageHTML = row.images.map(image => `<img src="${image}" alt="Image" style="max-width: 50px; max-height: 50px;">`).join(' ');
                 return `<div>${imageHTML}</div>`;
