@@ -296,7 +296,7 @@ img {
 }
 
 .image-container {
-    /* position: relative; */
+    position: relative;
     width: 202px;
     height: 202px;
     margin: 20px 20px;

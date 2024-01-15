@@ -119,7 +119,6 @@ export default {
        
         const result = await axios.get(url, { headers: header });
         if (result.status == 200) {
-          // console.log(result.data);
           this.catchartlabel = Object.keys(result.data);
           this.catchartdata = Object.values(result.data);
           const ctx = document.getElementById("missing-cat");
@@ -131,7 +130,7 @@ export default {
                 {
                   label: "Number of missing cat",
                   data: this.catchartdata,
-                  backgroundColor: "rgba(54, 73, 90, .5)",
+                  backgroundColor: "rgba(236,217,201,0.7  )",
                   borderWidth: 3,
                 },
               ],
@@ -147,8 +146,20 @@ export default {
                       padding: 10,
                       stepSize: 2,
                     },
+                    scaleLabel: {
+                      display:true,
+                      labelString: 'Number of cases'
+                    }
                   },
                 ],
+                xAxes: [
+                  {
+                    scaleLabel:{
+                      display: true,
+                      labelString: 'Date'
+                    }
+                  }
+                ]
               },
             },
           };
