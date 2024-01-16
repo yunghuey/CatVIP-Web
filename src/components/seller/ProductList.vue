@@ -16,8 +16,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Product Name</th>
-                            <th>Price</th>
+                            <th>Name</th>
+                            <th>Image</th>
                             <th>Description</th>
                             <th>URL</th>
                             <th>Edit</th>
@@ -105,10 +105,10 @@ export default{
                     this.tableData = this.createData();
                     this.columnData = [
                         { title: 'No', data: 'index'},
-                        { title: 'Product Name', data: 'productname'},
-                        { title: 'Price', data: 'price'},
-                        { title: 'Description', data: 'desc'},
-                        { title: 'URL', data: 'url'},
+                        { title: 'Product Name', data: 'productname', className: 'product-name'},
+                        { title: 'Product Image', data: 'productimg',},
+                        { title: 'Description', data: 'desc', className: 'desc-col'},
+                        { title: 'URL', data: 'url', className:'url-col'},
                         { title: 'Edit', data: 'buttonEdit'},
                         { title: 'Delete', data: 'buttonDelete'},
                         { title: 'Id', visible: false,data: 'id'},
@@ -148,9 +148,10 @@ export default{
                 return {
                     index: index + 1,
                     productname: prod.name,
+                    productimg: `<img src="data:image/png;base64,${prod.image}" alt="${prod.name}" width='160px;'>`,
                     price: parseFloat(prod.price).toFixed(2),
                     desc: prod.description,
-                    url: prod.url,
+                    url: `<a href='${prod.url}' style='color:#3C1E08'>${prod.name}</a>`,
                     buttonEdit:"<button class='edit btn btn-edit'>Edit</button>",
                     buttonDelete: "<button type='button' class='btn btn-alert delete' data-bs-toggle='modal' data-bs-target='#deleteModal'>Delete</button>",
                     id: prod.id,
@@ -170,10 +171,8 @@ export default{
             }
         },
         addProduct(){
-            console.log("test");
-            console.log("kau kt mne ni")
             this.$router.push({ name: 'AddProduct' });
-        }
+        },
     },
     created() {
         const reloaded = localStorage.getItem('reloadproduct');
@@ -199,9 +198,18 @@ main{
 .col-sm-12{
     color: red;
 }
+.product-name{
+    white-space: nowrap;
+}
+.url-col{
+    width: 150px  !important;
+}
+.desc-col{
+    width: 200px  !important;
+}
 @media (min-width: 992px){
     main{
-        margin-left: 150px;
+        margin-left: 140px;
     }
 }
 </style>

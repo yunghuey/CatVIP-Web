@@ -323,7 +323,7 @@ img {
 @media (min-width: 992px) {
 
     main {
-        margin-left: 150px;
+        margin-left: 140px;
     }
 }
 </style>

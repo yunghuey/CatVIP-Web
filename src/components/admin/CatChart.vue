@@ -3,8 +3,8 @@
     <div class="card mb-2">
       <div class="card-body">
         <div class="row button-grp">
-          <div class="col-sm-2">
-            <h4 class="card-title mb-0">Missing Cats</h4>
+          <div class="col-sm-10">
+            <h4 class="card-title mb-0">Missing Cats Summary</h4>
             <div class="small text-medium-emphasis" v-text="catduration"></div>
           </div>
           
@@ -128,7 +128,7 @@ export default {
               labels: this.catchartlabel,
               datasets: [
                 {
-                  label: "Number of missing cat",
+                  label: "Number of cases",
                   data: this.catchartdata,
                   backgroundColor: "rgba(236,217,201,0.7  )",
                   borderWidth: 3,
