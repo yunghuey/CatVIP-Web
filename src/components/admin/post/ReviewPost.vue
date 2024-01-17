@@ -129,7 +129,7 @@ export default {
                     if (res.status == 200) {
                         this.updateMessage = '';
                         this.displayMessage = false;
-                        this.$router.go();
+                        this.$router.go(-1);
                     } else {
                         this.updateMessage = res.status;
                         this.displayMessage = true;
