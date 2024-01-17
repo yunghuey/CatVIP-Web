@@ -151,7 +151,7 @@ export default{
                     productimg: `<img src="data:image/png;base64,${prod.image}" alt="${prod.name}" width='160px;'>`,
                     price: parseFloat(prod.price).toFixed(2),
                     desc: prod.description,
-                    url: `<a href='${prod.url}' style='color:#3C1E08'>${prod.name}</a>`,
+                    url: `<a href='${prod.url}' style='color:#3C1E08' target='_blanks'>${prod.name}</a>`,
                     buttonEdit:"<button class='edit btn btn-edit'>Edit</button>",
                     buttonDelete: "<button type='button' class='btn btn-alert delete' data-bs-toggle='modal' data-bs-target='#deleteModal'>Delete</button>",
                     id: prod.id,
@@ -205,7 +205,7 @@ main{
     width: 150px  !important;
 }
 .desc-col{
-    width: 200px  !important;
+    /* width: 200px  !important; */
 }
 @media (min-width: 992px){
     main{
